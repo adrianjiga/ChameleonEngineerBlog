@@ -1,4 +1,6 @@
 name: Update Changelog (Development)
+permissions:
+  pull-requests: write
 
 on:
   workflow_dispatch: # Manual trigger
