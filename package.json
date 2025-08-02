@@ -1,0 +1,39 @@
+{
+  "name": "chameleonengineerblog",
+  "version": "1.0.0",
+  "description": "A blog for Chameleon Engineer",
+  "keywords": [
+    "blog",
+    "tech"
+  ],
+  "homepage": "https://github.com/adrianjiga/ChameleonEngineerBlog#readme",
+  "bugs": {
+    "url": "https://github.com/adrianjiga/ChameleonEngineerBlog/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrianjiga/ChameleonEngineerBlog.git"
+  },
+  "license": "MIT",
+  "author": "Adrian Jiga",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit --last",
+    "commitlint:check": "commitlint --from=HEAD~1",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@eslint/js": "^9.32.0",
+    "eslint": "^9.32.0",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "jiti": "^2.5.1",
+    "typescript-eslint": "^8.38.0"
+  }
+}
