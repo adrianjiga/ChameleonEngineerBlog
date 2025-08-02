@@ -19,17 +19,24 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test",
+    "dev": "to be completed",
+    "build": "to be completed",
+    "start": "to be completed",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky",
     "commitlint": "commitlint --edit --last",
     "commitlint:check": "commitlint --from=HEAD~1",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "changelog": "auto-changelog -p",
+    "changelog:update": "auto-changelog -p --unreleased",
+    "version": "npm run changelog && git add CHANGELOG.md"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.32.0",
+    "auto-changelog": "^2.5.0",
     "eslint": "^9.32.0",
     "globals": "^16.3.0",
     "husky": "^9.1.7",

@@ -1,0 +1,77 @@
+name: Generate Changelog
+
+on:
+  release:
+    types: [created]
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: # Manual trigger
+    inputs:
+      version:
+        description: "Version for changelog"
+        required: false
+        default: ""
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch full history for changelog generation
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Generate changelog
+        run: |
+          npm run changelog
+
+      - name: Check if changelog was updated
+        id: changelog-check
+        run: |
+          if git diff --quiet CHANGELOG.md; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changelog
+        if: steps.changelog-check.outputs.changed == 'true'
+        run: |
+          git add CHANGELOG.md
+          git commit -m "docs: update changelog [skip ci]"
+          git push
+
+      - name: Update Release with Changelog
+        if: github.event_name == 'release' && steps.changelog-check.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Extract the latest changelog entry
+          VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\///')
+
+          # Get changelog content for this version
+          CHANGELOG_CONTENT=$(awk '/^## / {if (found) exit; if ($0 ~ /'"${VERSION}"'/) found=1; next} found' CHANGELOG.md)
+
+          # Update the release with changelog content
+          gh release edit ${{ github.ref_name }} --notes "$CHANGELOG_CONTENT" || true
