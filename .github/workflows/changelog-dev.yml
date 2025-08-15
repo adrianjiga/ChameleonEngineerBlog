@@ -1,5 +1,7 @@
 name: Update Changelog (Development)
+
 permissions:
+  contents: write
   pull-requests: write
 
 on:
