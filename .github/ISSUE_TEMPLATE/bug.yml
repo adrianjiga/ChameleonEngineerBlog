@@ -1,9 +1,9 @@
 # Bug Report
 name: Bug Report
 description: Report a bug in the Chameleon Engineer Blog project.
-title: "[BUG] "
+title: '[BUG] '
 labels: bug
-assignees: ""
+assignees: ''
 body:
   - type: markdown
     attributes:
@@ -44,29 +44,29 @@ body:
     attributes:
       label: Screenshot Links
       description: If you checked the box above, please provide links to the screenshots.
-      placeholder: "https://example.com/screenshot1.png, https://example.com/screenshot2.png"
+      placeholder: 'https://example.com/screenshot1.png, https://example.com/screenshot2.png'
       condition: include-screenshots == 'yes'
   - type: input
     id: environment
     attributes:
       label: Environment
       description: Provide details about your environment (e.g., browser version, operating system).
-      placeholder: "e.g., Chrome 90 on Windows 10"
+      placeholder: 'e.g., Chrome 90 on Windows 10'
   - type: input
     id: version
     attributes:
       label: Version
       description: Specify the version of the Chameleon Engineer Blog you are using.
-      placeholder: "e.g., 1.0.0"
+      placeholder: 'e.g., 1.0.0'
   - type: input
     id: contact-info
     attributes:
       label: Contact Information
       description: Provide your contact information if you would like to be notified about the resolution of this bug.
-      placeholder: "e.g., yourname@example.com"
+      placeholder: 'e.g., yourname@example.com'
   - type: textarea
     id: additional-comments
     attributes:
       label: Additional Comments
       description: Any other comments or information you would like to add.
-      placeholder: "Optional comments or suggestions"
+      placeholder: 'Optional comments or suggestions'
