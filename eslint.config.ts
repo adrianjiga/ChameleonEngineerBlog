@@ -4,7 +4,6 @@ import tseslint from 'typescript-eslint';
 import vuelint from 'eslint-plugin-vue';
 
 export default [
-
   // Base ESLint, TypeScript, and Vue.js recommended configs
   js.configs.recommended,
   ...tseslint.configs.recommended,
