@@ -5,6 +5,10 @@ const port = 4000;
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the backend!');
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
