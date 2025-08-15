@@ -1,13 +1,14 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import vuelint from 'eslint-plugin-vue';
 
 export default [
-  // Base ESLint recommended config
-  js.configs.recommended,
 
-  // TypeScript recommended configs
+  // Base ESLint, TypeScript, and Vue.js recommended configs
+  js.configs.recommended,
   ...tseslint.configs.recommended,
+  ...vuelint.configs['flat/recommended'],
 
   // Base configuration for all JS/TS files
   {
@@ -34,4 +35,4 @@ export default [
   {
     ignores: ['node_modules/**', 'dist/**', 'build/**', '.next/**'],
   },
-]
+];
