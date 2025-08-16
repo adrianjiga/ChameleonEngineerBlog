@@ -22,6 +22,7 @@
     "frontend": "cd frontend && npm run dev",
     "backend": "cd api && npm run dev",
     "start:dev": "run-p frontend backend",
+    "start:docker": "docker compose up",
     "build": "to be completed",
     "start": "to be completed",
     "test": "echo \"Error: no test specified\" && exit 1",
