@@ -7,16 +7,22 @@ Code for Chameleon Engineer blog.
 1. Install dependencies:
 
 ```bash
-to be completed
+npm install
+cd frontend && npm install
+cd ../api && npm install && cd ..
 ```
 
 2. Start development server:
 
 ```bash
-to be completed
+# using npm-run-all2
+npm run start:dev
+
+# using docker
+npm run start:docker
 ```
 
-3. Open `to be completed` in your browser
+3. Open `localhost:5173` in your browser
 
 ## Contributing
 
