@@ -67,8 +67,8 @@
 - ~~`app/Models/User.php`~~ ✅ added `is_admin` to `$fillable`, boolean cast, `posts(): HasMany<Post>`, `isAdmin(): bool`; also added `'is_admin' => false` to `UserFactory` default (needed for model tests)
 - ~~`app/Models/Post.php`~~ ✅ full model with `PostStatus` cast, relationships, scopes (`published`, `scheduled`, `readyToPublish`, `forUser`, `search`), `reading_time` and `featured_image_urls` accessors, `booted()` for auto-slug; `getRouteKeyName()` returns `'slug'`
 - ~~`app/Models/Category.php`~~ ✅ `name, slug, description` fillable, `posts(): BelongsToMany<Post>`, `booted()` for auto-slug
-- `app/Policies/PostPolicy.php` (new) — `viewAny/create` → true; `view/update/delete/restore` → admin OR owner; `forceDelete` → admin only
-- `app/Policies/CategoryPolicy.php` (new) — read methods → true; write methods → admin only
+- ~~`app/Policies/PostPolicy.php`~~ ✅ `viewAny/create` → true; `view/update/delete/restore` → admin OR owner; `forceDelete` → admin only
+- ~~`app/Policies/CategoryPolicy.php`~~ ✅ read methods → true; write methods → admin only
 - `database/factories/UserFactory.php` — add `'is_admin' => false` to default, add `admin()` state
 - `database/factories/PostFactory.php` (new) — default is draft; states: `published()`, `draft()`, `scheduled()`, `withFeaturedImage()`
 - `database/factories/CategoryFactory.php` (new)
