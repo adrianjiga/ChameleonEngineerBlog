@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Chameleon Engineer Blog is a Laravel 12 + Inertia.js v2 + Vue 3 SPA. It uses Laravel Fortify for headless authentication (login, register, password reset, email verification, 2FA), Wayfinder for type-safe TypeScript route bindings, Tailwind CSS v4, and Reka UI (Shadcn-style) components.
 
+Installed packages: `intervention/image ^3.11`, `league/flysystem-aws-s3-v3 ^3.0`, `resend/resend-laravel ^1.0` (Composer); `@tiptap/vue-3` + extensions, `dompurify`, `vue-sonner`, `@types/dompurify` (NPM).
+
 ## Commands
 
 ```bash
@@ -96,12 +98,20 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
 - phpunit/phpunit (PHPUNIT) - v11
+- @inertiajs/vue3 (INERTIA_VUE) - v2
+- tailwindcss (TAILWINDCSS) - v4
+- vue (VUE) - v3
+- @laravel/vite-plugin-wayfinder (WAYFINDER_VITE) - v0
+- eslint (ESLINT) - v9
+- prettier (PRETTIER) - v3
 
 ## Skills Activation
 
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
 - `wayfinder-development` — Activates whenever referencing backend routes in frontend components. Use when importing from @/actions or @/routes, calling Laravel routes from TypeScript, or working with Wayfinder route functions.
+- `inertia-vue-development` — Develops Inertia.js v2 Vue client-side applications. Activates when creating Vue pages, forms, or navigation; using &lt;Link&gt;, &lt;Form&gt;, useForm, or router; working with deferred props, prefetching, or polling; or when user mentions Vue with Inertia, Vue pages, Vue forms, or Vue navigation.
+- `tailwindcss-development` — Styles applications using Tailwind CSS v4 utilities. Activates when adding styles, restyling components, working with gradients, spacing, layout, flex, grid, responsive design, dark mode, colors, typography, or borders; or when the user mentions CSS, styling, classes, Tailwind, restyle, hero section, cards, buttons, or any visual/UI changes.
 - `developing-with-fortify` — Laravel Fortify headless authentication backend development. Activate when implementing authentication features including login, registration, password reset, email verification, two-factor authentication (2FA/TOTP), profile updates, headless auth, authentication scaffolding, or auth guards in Laravel applications.
 
 ## Conventions
@@ -222,6 +232,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Inertia creates fully client-side rendered SPAs without modern SPA complexity, leveraging existing server-side patterns.
 - Components live in `resources/js/pages` (unless specified in `vite.config.js`). Use `Inertia::render()` for server-side routing instead of Blade views.
 - ALWAYS use `search-docs` tool for version-specific Inertia documentation and updated code examples.
+- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
 
 # Inertia v2
 
@@ -345,6 +356,21 @@ Wayfinder generates TypeScript functions for Laravel routes. Import from `@/acti
 - To run all tests: `php artisan test --compact`.
 - To run all tests in a file: `php artisan test --compact tests/Feature/ExampleTest.php`.
 - To filter on a particular test name: `php artisan test --compact --filter=testName` (recommended after making a change to a related file).
+
+=== inertia-vue/core rules ===
+
+# Inertia + Vue
+
+Vue components must have a single root element.
+- IMPORTANT: Activate `inertia-vue-development` when working with Inertia Vue client-side patterns.
+
+=== tailwindcss/core rules ===
+
+# Tailwind CSS
+
+- Always use existing Tailwind conventions; check project patterns before adding new ones.
+- IMPORTANT: Always use `search-docs` tool for version-specific Tailwind CSS documentation and updated code examples. Never rely on training data.
+- IMPORTANT: Activate `tailwindcss-development` every time you're working with a Tailwind CSS or styling-related task.
 
 === laravel/fortify rules ===
 
