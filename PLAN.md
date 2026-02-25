@@ -69,10 +69,10 @@
 - ~~`app/Models/Category.php`~~ ✅ `name, slug, description` fillable, `posts(): BelongsToMany<Post>`, `booted()` for auto-slug
 - ~~`app/Policies/PostPolicy.php`~~ ✅ `viewAny/create` → true; `view/update/delete/restore` → admin OR owner; `forceDelete` → admin only
 - ~~`app/Policies/CategoryPolicy.php`~~ ✅ read methods → true; write methods → admin only
-- `database/factories/UserFactory.php` — add `'is_admin' => false` to default, add `admin()` state
-- `database/factories/PostFactory.php` (new) — default is draft; states: `published()`, `draft()`, `scheduled()`, `withFeaturedImage()`
-- `database/factories/CategoryFactory.php` (new)
-- `database/seeders/DatabaseSeeder.php` — admin user + 3 users + 7 categories + 12 published posts + 3 drafts + 2 scheduled; attach categories to posts
+- ~~`database/factories/UserFactory.php`~~ ✅ `'is_admin' => false` default added earlier; `admin()` state added
+- ~~`database/factories/PostFactory.php`~~ ✅ default is draft; states: `published()`, `draft()`, `scheduled()`, `withFeaturedImage()`; slug omitted from factory (model booted() handles it)
+- ~~`database/factories/CategoryFactory.php`~~ ✅ name + optional description; slug omitted from factory (model booted() handles it)
+- ~~`database/seeders/DatabaseSeeder.php`~~ ✅ admin user + 3 users + 7 categories + 12 published posts + 3 drafts + 2 scheduled; categories attached to published posts
 
 **Gotchas:**
 - Policies are auto-discovered in Laravel 12 — no registration needed
