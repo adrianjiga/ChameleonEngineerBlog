@@ -53,7 +53,7 @@ See [PLAN.md](PLAN.md) for the full implementation roadmap.
 | 1b | PostStatus enum | ✅ Done |
 | 1c | Database migrations | ✅ Done |
 | 2a | Post, Category, User models | ✅ Done |
-| 2b | PostPolicy, CategoryPolicy | Pending |
+| 2b | PostPolicy, CategoryPolicy | ✅ Done |
 | 2c | Factories, Seeders | Pending |
 | 3 | Image Service, Observer, Console Commands | Pending |
 | 4 | Form Requests, Controllers, Routes, Blade Views | Pending |
