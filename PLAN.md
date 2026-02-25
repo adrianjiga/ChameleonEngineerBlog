@@ -42,7 +42,7 @@
 ### Actions
 1. ~~Install Composer deps~~ ✅ `intervention/image:^3.11`, `league/flysystem-aws-s3-v3:^3.0`, `resend/resend-laravel:^1.0` (note: ^0.3 incompatible with Laravel 12; bumped to ^1.0)
 2. ~~Install NPM deps~~ ✅ `@tiptap/vue-3`, `@tiptap/starter-kit`, `@tiptap/extension-image`, `@tiptap/extension-link`, `@tiptap/extension-placeholder`, `@tiptap/extension-character-count`, `dompurify`, `vue-sonner`; `@types/dompurify` as devDep
-3. Create `app/Enums/PostStatus.php` — backed string enum: `Draft='draft'`, `Published='published'`, `Unpublished='unpublished'`; methods `label(): string` and `color(): string`
+3. ~~Create `app/Enums/PostStatus.php`~~ ✅ backed string enum: `Draft='draft'`, `Published='published'`, `Unpublished='unpublished'`; methods `label(): string` and `color(): string`
 4. Create migration: `add_is_admin_to_users_table` — `boolean('is_admin')->default(false)->after('password')`
 5. Create migration: `create_categories_table` — `id, name, slug (unique), description (nullable text), timestamps`
 6. Create migration: `create_posts_table` — `id, user_id (FK cascade), title, slug (unique), excerpt (nullable), content (longText), featured_image (nullable), status (string default 'draft'), published_at (nullable), timestamps`
