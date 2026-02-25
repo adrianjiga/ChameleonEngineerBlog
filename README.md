@@ -50,7 +50,7 @@ See [PLAN.md](PLAN.md) for the full implementation roadmap.
 | Phase | Description | Status |
 |-------|-------------|--------|
 | 1a | Composer + NPM dependencies | ✅ Done |
-| 1b | PostStatus enum | Pending |
+| 1b | PostStatus enum | ✅ Done |
 | 1c | Database migrations | Pending |
 | 2 | Models, Policies, Factories, Seeders | Pending |
 | 3 | Image Service, Observer, Console Commands | Pending |
