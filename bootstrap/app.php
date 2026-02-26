@@ -32,7 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 return back()->with('flash.error', 'Your session has expired. Please refresh and try again.');
             }
 
-            if (in_array($status, [404, 403, 500, 503])) {
+            if ($request->inertia() && in_array($status, [404, 403, 500, 503])) {
                 return Inertia::render('ErrorPage', ['status' => $status])
                     ->toResponse($request)
                     ->setStatusCode($status);
