@@ -77,7 +77,6 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
 
     const clearTwoFactorAuthData = (): void => {
         clearSetupData();
-        clearErrors();
         recoveryCodesList.value = [];
     };
 
