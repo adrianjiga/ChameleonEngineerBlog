@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\ImageOptimizer;
 use Carbon\CarbonImmutable;
+use Illuminate\Filesystem\FilesystemManager;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -15,7 +17,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(ImageOptimizer::class, fn () => new ImageOptimizer(
+            $this->app->make(FilesystemManager::class)
+        ));
     }
 
     /**
