@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
-import { index as postsIndex } from '@/routes/posts';
+import { autosave, index as postsIndex } from '@/routes/posts';
 import type { BreadcrumbItem, Category, Post } from '@/types';
 
 const props = defineProps<{ post: Post; categories: Category[] }>();
@@ -41,7 +41,7 @@ const form = useForm({
 });
 
 function submit() {
-    form.submit(update({ id: props.post.id }), { forceFormData: true });
+    form.submit(update(props.post), { forceFormData: true });
 }
 
 function toggleCategory(id: number) {
@@ -64,7 +64,7 @@ watch(
         autosaveTimer = setTimeout(() => {
             autosaveStatus.value = 'saving';
             router.patch(
-                `/posts/${props.post.id}/autosave`,
+                autosave(props.post).url,
                 { title: form.title, content: form.content },
                 {
                     preserveState: true,

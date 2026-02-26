@@ -53,7 +53,7 @@ const { sanitize } = useSanitizedHtml();
                     </div>
                 </div>
                 <Button as-child>
-                    <Link :href="edit({ id: post.id })">
+                    <Link :href="edit(post)">
                         <Pencil class="size-4" />
                         Edit
                     </Link>

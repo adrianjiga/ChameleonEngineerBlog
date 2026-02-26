@@ -22,8 +22,8 @@ import {
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
-import { create, index as postsIndex } from '@/routes/posts';
-import type { BreadcrumbItem, PaginatedPosts } from '@/types';
+import { create, edit, index as postsIndex } from '@/routes/posts';
+import type { BreadcrumbItem, PaginatedPosts, Post } from '@/types';
 
 const props = defineProps<{
     posts: PaginatedPosts;
@@ -58,9 +58,9 @@ const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
     unpublished: 'outline',
 };
 
-function confirmDelete(postId: number) {
+function confirmDelete(post: Post) {
     if (!confirm('Are you sure you want to delete this post?')) return;
-    useForm({}).submit(destroy({ id: postId }));
+    useForm({}).submit(destroy(post));
 }
 </script>
 
@@ -156,7 +156,7 @@ function confirmDelete(postId: number) {
                             <TableCell>
                                 <div class="flex gap-1">
                                     <Button variant="ghost" size="icon-sm" as-child>
-                                        <Link :href="`/posts/${post.id}/edit`">
+                                        <Link :href="edit(post)">
                                             <Pencil class="size-4" />
                                         </Link>
                                     </Button>
@@ -164,7 +164,7 @@ function confirmDelete(postId: number) {
                                         variant="ghost"
                                         size="icon-sm"
                                         class="text-destructive hover:text-destructive"
-                                        @click="confirmDelete(post.id)"
+                                        @click="confirmDelete(post)"
                                     >
                                         <Trash2 class="size-4" />
                                     </Button>
