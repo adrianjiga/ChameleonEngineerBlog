@@ -188,21 +188,21 @@ php artisan test --compact
 **Goal:** All frontend pages and components implemented.
 
 ### Application Components
-- `resources/js/components/RichTextEditor.vue` — TipTap editor; props: `modelValue`, `placeholder`, `maxLength`; toolbar with bold/italic/headings/lists/blockquote/code/link/image; emits `update:modelValue`
-- `resources/js/components/CoverImageUpload.vue` — drag-and-drop/click upload; props: `modelValue: File|null`, `existingImageUrl?: string`; shows preview, validates type+size client-side
-- `resources/js/components/AppSidebar.vue` — add Blog (`route('blog.index')`), Posts (`route('posts.index')`), Categories (`route('categories.index')`) to `mainNavItems`; import `FileText`, `Tag` icons from lucide; import routes from Wayfinder-generated `@/routes`
-- `resources/js/layouts/app/AppSidebarLayout.vue` — import `Sonner` from `@/components/ui/sonner`; add `usePage` flash watcher with `toast.success/error`; add `<Sonner position="bottom-right" rich-colors />` in template
+- ~~`resources/js/components/RichTextEditor.vue`~~ ✅ — TipTap editor; props: `modelValue`, `placeholder`, `maxLength`; full toolbar (bold/italic/headings/lists/blockquote/code/link/image/undo/redo); character count
+- ~~`resources/js/components/CoverImageUpload.vue`~~ ✅ — drag-and-drop/click upload; props: `modelValue: File|null`, `existingImageUrl?: string`; preview, client-side type+size validation (max 5MB)
+- ~~`resources/js/components/AppSidebar.vue`~~ ✅ — added Blog (Newspaper icon), Posts (FileText icon), Categories (Tag icon) to `mainNavItems` via Wayfinder `@/routes/blog`, `@/routes/posts`, `@/routes/categories`
+- ~~`resources/js/layouts/app/AppSidebarLayout.vue`~~ ✅ — added `Sonner` + `toast` from `@/components/ui/sonner`; `usePage` flash watcher; `<Sonner position="bottom-right" :rich-colors="true" />`
 
 ### Pages
-- `resources/js/pages/ErrorPage.vue` — props: `status`; map to titles/messages; link back home
-- `resources/js/pages/Dashboard.vue` — props: `stats`, `recentPosts`, `popularCategories`; 4 stat cards (use `Card` components); recent posts table; popular categories list
-- `resources/js/pages/blog/Index.vue` — public (no AppLayout); props: `posts` (paginated), `categories`, `filters`; hero, search, category pills, post grid, pagination
-- `resources/js/pages/blog/Show.vue` — public; props: `post`, `relatedPosts`; header, featured image, sanitized HTML content (use `useSanitizedHtml`), related posts
-- `resources/js/pages/posts/Index.vue` — AppLayout; props: `posts` (paginated), `filters`; table with status badges + actions; search + status Select filter; "New Post" button
-- `resources/js/pages/posts/Create.vue` — AppLayout; `useForm` with all fields; submit to Wayfinder `posts.store`; `forceFormData: true` for file uploads
-- `resources/js/pages/posts/Edit.vue` — AppLayout; same as Create but pre-populated; autosave on content change (debounced 2s via separate `router.patch`)
-- `resources/js/pages/posts/Show.vue` — AppLayout; post preview with edit button
-- `resources/js/pages/categories/Index.vue` — AppLayout; table + inline Dialog-based create/edit form; submit via Wayfinder actions
+- ~~`resources/js/pages/ErrorPage.vue`~~ ✅ — props: `status`; maps 403/404/500/503 to titles/messages; Link back home
+- ~~`resources/js/pages/Dashboard.vue`~~ ✅ — 4 stat cards, recent posts Table, popular categories Table; uses Card + Table + Badge components
+- ~~`resources/js/pages/blog/Index.vue`~~ ✅ — public (no AppLayout); search, category pills, post grid with images, pagination
+- ~~`resources/js/pages/blog/Show.vue`~~ ✅ — public; featured image, sanitized HTML content via `useSanitizedHtml`, related posts
+- ~~`resources/js/pages/posts/Index.vue`~~ ✅ — AppLayout; Table with status Badge, Search input, status Select filter, edit/delete actions
+- ~~`resources/js/pages/posts/Create.vue`~~ ✅ — `useForm` with all fields; `forceFormData: true`; RichTextEditor, CoverImageUpload, category checkboxes, SEO details
+- ~~`resources/js/pages/posts/Edit.vue`~~ ✅ — same as Create but pre-populated; autosave on title/content change (debounced 2s via `router.patch`)
+- ~~`resources/js/pages/posts/Show.vue`~~ ✅ — AppLayout; post preview with sanitized HTML; edit button
+- ~~`resources/js/pages/categories/Index.vue`~~ ✅ — AppLayout; Table + inline Dialog create/edit; admin-gated actions via `can` flags from server
 
 **Gotchas:**
 - `blog/Index.vue` and `blog/Show.vue` are public — do NOT use `AppLayout`
