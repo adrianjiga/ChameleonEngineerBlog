@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\RssFeedController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,12 @@ Route::get('blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
+
+    Route::post('posts/upload-image', [PostController::class, 'uploadImage'])->name('posts.upload-image');
+    Route::patch('posts/{post}/autosave', [PostController::class, 'autosave'])
+        ->name('posts.autosave')
+        ->middleware('throttle:60,1');
+    Route::resource('posts', PostController::class);
 });
 
 require __DIR__.'/settings.php';
