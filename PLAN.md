@@ -169,13 +169,13 @@ php artisan test --compact
 **Goal:** All new Reka-UI-based components and composables are ready before feature pages need them.
 
 ### Files
-- `resources/js/composables/useSanitizedHtml.ts` — exports `useSanitizedHtml()` returning `{ sanitize: (html: string) => string }` using DOMPurify
-- `resources/js/types/blog.ts` (new) — `Category`, `Post` type definitions; export from `types/index.ts`; add `is_admin: boolean` to User type in `types/auth.ts`
-- `resources/js/components/ui/select/` — `Select.vue`, `SelectTrigger.vue` (+ ChevronDown icon), `SelectContent.vue`, `SelectItem.vue`, `SelectValue.vue`, `index.ts`; wrap Reka UI SelectRoot etc.; follow `cn()` + `useForwardPropsEmits` pattern from existing components
-- `resources/js/components/ui/table/` — `Table.vue`, `TableHeader.vue`, `TableBody.vue`, `TableRow.vue`, `TableHead.vue`, `TableCell.vue`, `index.ts`
-- `resources/js/components/ui/tabs/` — `Tabs.vue`, `TabsList.vue`, `TabsTrigger.vue`, `TabsContent.vue`, `index.ts`
-- `resources/js/components/ui/popover/` — `Popover.vue`, `PopoverTrigger.vue`, `PopoverContent.vue`, `index.ts`
-- `resources/js/components/ui/sonner/` — `Sonner.vue` (wraps `Toaster` from vue-sonner, reads theme from `useAppearance()`), `index.ts`
+- ~~`resources/js/composables/useSanitizedHtml.ts`~~ ✅ — exports `useSanitizedHtml()` returning `{ sanitize: (html: string) => string }` using DOMPurify
+- ~~`resources/js/types/blog.ts`~~ ✅ (new) — `Category`, `Post`, `PaginatedPosts` type definitions; exported from `types/index.ts`; `is_admin: boolean` added to User type in `types/auth.ts`
+- ~~`resources/js/components/ui/select/`~~ ✅ — `Select.vue`, `SelectTrigger.vue` (+ ChevronDown via SelectIcon), `SelectContent.vue`, `SelectItem.vue`, `SelectValue.vue`, `index.ts`
+- ~~`resources/js/components/ui/table/`~~ ✅ — `Table.vue`, `TableHeader.vue`, `TableBody.vue`, `TableRow.vue`, `TableHead.vue`, `TableCell.vue`, `index.ts`
+- ~~`resources/js/components/ui/tabs/`~~ ✅ — `Tabs.vue`, `TabsList.vue`, `TabsTrigger.vue`, `TabsContent.vue`, `index.ts`
+- ~~`resources/js/components/ui/popover/`~~ ✅ — `Popover.vue`, `PopoverTrigger.vue`, `PopoverContent.vue`, `index.ts`
+- ~~`resources/js/components/ui/sonner/`~~ ✅ — `Sonner.vue` (wraps `Toaster` from vue-sonner, reads `resolvedAppearance` from `useAppearance()`), `index.ts` (also re-exports `toast`)
 
 **Patterns:** Follow `data-slot="component-name"` attribute, `cn()` for class binding — look at `components/ui/dialog/` as reference.
 
