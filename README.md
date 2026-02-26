@@ -6,7 +6,7 @@ A full-featured blog platform built with Laravel 12, Inertia.js v2, and Vue 3.
 
 - **Backend**: Laravel 12, Laravel Fortify (headless auth), Laravel Wayfinder
 - **Frontend**: Vue 3, Inertia.js v2, Tailwind CSS v4, Reka UI
-- **Editor**: TipTap v2 rich text editor
+- **Editor**: TipTap v3 rich text editor
 - **Storage**: Local (dev) / AWS S3 (prod) via Flysystem
 - **Email**: Resend
 - **Database**: SQLite (dev)
@@ -43,21 +43,16 @@ npm run build
 php artisan test --compact
 ```
 
-## Implementation Progress
+## Features
 
-See [PLAN.md](PLAN.md) for the full implementation roadmap.
-
-| Phase | Description | Status |
-|-------|-------------|--------|
-| 1a | Composer + NPM dependencies | ✅ Done |
-| 1b | PostStatus enum | ✅ Done |
-| 1c | Database migrations | ✅ Done |
-| 2a | Post, Category, User models | ✅ Done |
-| 2b | PostPolicy, CategoryPolicy | ✅ Done |
-| 2c | Factories, Seeders | ✅ Done |
-| 3 | Image Service, Observer, Console Commands | Pending |
-| 4 | Form Requests, Controllers, Routes, Blade Views | Pending |
-| 5 | Feature Tests | Pending |
-| 6 | Frontend UI Primitives | Pending |
-| 7 | Application Components, Layout, Feature Pages | Pending |
-| 8 | Seeder Completion & Final Validation | Pending |
+| Area | Details |
+|------|---------|
+| Authentication | Login, register, password reset, email verification, 2FA (via Laravel Fortify) |
+| Blog | Public post listing with search & category filter, paginated, sanitized HTML rendering |
+| Posts | Full CRUD, rich text editor (TipTap), cover image upload, SEO fields, autosave, scheduled publishing |
+| Categories | Admin-only create/update/delete; any authenticated user can view |
+| Dashboard | Stats overview, recent posts, popular categories |
+| Image handling | Upload optimisation + variant generation (large/medium/thumb) via Intervention Image; S3-compatible storage |
+| Console commands | `posts:publish-scheduled`, `posts:cleanup-images` |
+| Sitemap & RSS | `/sitemap.xml`, `/feed.rss` |
+| Authorization | `PostPolicy`, `CategoryPolicy` — admin and owner-based gates |
