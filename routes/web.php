@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RssFeedController;
@@ -25,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('posts.autosave')
         ->middleware('throttle:60,1');
     Route::resource('posts', PostController::class);
+    Route::resource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
 require __DIR__.'/settings.php';
