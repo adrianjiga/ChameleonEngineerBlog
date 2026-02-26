@@ -2,7 +2,7 @@
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { Pencil, Plus, Search, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
-import AppLayout from '@/layouts/AppLayout.vue';
+import { destroy } from '@/actions/App/Http/Controllers/PostController';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,9 +20,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { destroy } from '@/actions/App/Http/Controllers/PostController';
-import { create, index as postsIndex } from '@/routes/posts';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
+import { create, index as postsIndex } from '@/routes/posts';
 import type { BreadcrumbItem, PaginatedPosts } from '@/types';
 
 const props = defineProps<{
@@ -187,8 +187,9 @@ function confirmDelete(postId: number) {
                                 ? 'bg-primary text-primary-foreground'
                                 : 'border-input bg-background hover:bg-muted border',
                         ]"
-                        v-html="link.label"
-                    />
+                    >
+                        <span v-html="link.label" />
+                    </Link>
                     <span
                         v-else
                         class="text-muted-foreground rounded-md px-3 py-1.5 text-sm"

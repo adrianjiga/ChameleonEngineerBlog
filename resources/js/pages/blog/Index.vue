@@ -3,8 +3,8 @@ import { Head, Link, router } from '@inertiajs/vue3';
 import { Search } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { Badge } from '@/components/ui/badge';
-import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import { home } from '@/routes';
+import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import type { Category, PaginatedPosts } from '@/types';
 
 const props = defineProps<{
@@ -160,8 +160,9 @@ function filterByCategory(slug: string | null) {
                                 ? 'bg-primary text-primary-foreground'
                                 : 'border-input bg-background hover:bg-muted border',
                         ]"
-                        v-html="link.label"
-                    />
+                    >
+                        <span v-html="link.label" />
+                    </Link>
                     <span
                         v-else
                         class="text-muted-foreground rounded-md px-3 py-1.5 text-sm"
