@@ -219,12 +219,12 @@ php artisan test --compact
 **Goal:** Seed data is production-quality and the full stack is verified end-to-end.
 
 ### Actions
-- Verify `DatabaseSeeder` attaches categories to posts correctly; outputs admin credentials
-- Run `php artisan migrate:fresh --seed` — confirm no errors
-- Run `php artisan test --compact` — all tests green
-- Run `npm run build` — no TypeScript errors
-- Run `vendor/bin/pint --dirty --format agent` — no formatting issues
-- Optionally add command test: create a past-scheduled post, run `php artisan posts:publish-scheduled`, assert status changed to Published
+- ~~Verify `DatabaseSeeder` attaches categories to posts correctly; outputs admin credentials~~ ✅ — added `$this->command?->info()` lines; seeder runs cleanly
+- ~~Run `php artisan migrate:fresh --seed` — confirm no errors~~ ✅ — 9 migrations ran, seeder produced 4 users, 7 categories, 17 posts
+- ~~Run `php artisan test --compact` — all tests green~~ ✅ — 284 tests, 895 assertions, all passing
+- ~~Run `npm run build` — no TypeScript errors~~ ✅ — clean production build
+- ~~Run `vendor/bin/pint --dirty --format agent` — no formatting issues~~ ✅ — pass
+- ~~Command test: create a past-scheduled post, run `php artisan posts:publish-scheduled`, assert status changed to Published~~ ✅ — already covered by `PublishScheduledPostsTest` (7 tests)
 
 ---
 
