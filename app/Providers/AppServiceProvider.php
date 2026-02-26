@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Post;
+use App\Observers\PostObserver;
 use App\Services\ImageOptimizer;
 use Carbon\CarbonImmutable;
 use Illuminate\Filesystem\FilesystemManager;
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Post::observe(PostObserver::class);
         $this->configureDefaults();
     }
 
