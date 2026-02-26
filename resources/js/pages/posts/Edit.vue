@@ -2,7 +2,9 @@
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { CheckCircle } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
-import AppLayout from '@/layouts/AppLayout.vue';
+import { update } from '@/actions/App/Http/Controllers/PostController';
+import CoverImageUpload from '@/components/CoverImageUpload.vue';
+import RichTextEditor from '@/components/RichTextEditor.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -13,11 +15,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import CoverImageUpload from '@/components/CoverImageUpload.vue';
-import RichTextEditor from '@/components/RichTextEditor.vue';
-import { update } from '@/actions/App/Http/Controllers/PostController';
-import { index as postsIndex } from '@/routes/posts';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
+import { index as postsIndex } from '@/routes/posts';
 import type { BreadcrumbItem, Category, Post } from '@/types';
 
 const props = defineProps<{ post: Post; categories: Category[] }>();

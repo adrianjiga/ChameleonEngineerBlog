@@ -13,9 +13,9 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { dashboard } from '@/routes';
 import { index as blogIndex } from '@/routes/blog';
 import { index as categoriesIndex } from '@/routes/categories';
-import { dashboard } from '@/routes';
 import { index as postsIndex } from '@/routes/posts';
 import type { NavItem } from '@/types';
 import AppLogo from './AppLogo.vue';
