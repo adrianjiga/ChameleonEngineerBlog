@@ -141,7 +141,7 @@
 **Goal:** Write and pass all PHPUnit tests for every new backend controller.
 
 ### Files
-- ~~`tests/Feature/DashboardTest.php`~~ ✅ — update: assert `stats`, `recentPosts`, `popularCategories` props; add admin-vs-user stats test
+- ~~`tests/Feature/DashboardTest.php`~~ ✅ — updated: assert `stats`, `recentPosts`, `popularCategories` props; admin-vs-user scoping; 14 tests total
 - ~~`tests/Feature/Posts/PostControllerTest.php`~~ ✅ (new) — cover: guest redirect, user sees own posts, admin sees all posts, create/store/edit/update/delete (happy + 403 for non-owner), autosave returns JSON, `readyToPublish` scope correctness, image upload validation
 - ~~`tests/Feature/Categories/CategoryControllerTest.php`~~ ✅ (new) — cover: any user sees index, only admin creates/updates/deletes, 403 for non-admin, auto-slug, unique name validation
 - ~~`tests/Feature/Blog/BlogControllerTest.php`~~ ✅ (new) — cover: index returns only published, search filter, category filter, pagination (15/page), show works for published, 404 for draft
