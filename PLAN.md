@@ -88,12 +88,12 @@
 **Goal:** All PHP infrastructure layer complete.
 
 ### Files
-- `app/Services/ImageOptimizer.php` (new) — constructor injects `FilesystemManager`; methods: `optimize(UploadedFile, string): string`, `generateVariants(string, ?string): array` (reads from `config('images.*')`), `deleteWithVariants(string): void`, `getVariantUrls(string): array`; uses Intervention Image v3 GD driver
-- `app/Observers/PostObserver.php` (new) — `saved()` and `deleted()` call `Cache::forget("post:{$post->id}")` and `Cache::increment('blog:index:version')`; `deleted()` also calls `ImageOptimizer::deleteWithVariants()` wrapped in try/catch
-- `app/Providers/AppServiceProvider.php` — update `register()` to bind `ImageOptimizer` as singleton; update `boot()` to register `PostObserver`, use `CarbonImmutable`, prohibit destructive commands in production, set production password rules (min 12, mixed case, numbers, symbols, uncompromised)
-- `app/Console/Commands/PublishScheduledPosts.php` (new) — signature `posts:publish-scheduled`; query `Post::readyToPublish()->get()`, update each to Published with `published_at = now()`
-- `app/Console/Commands/CleanupOrphanedImages.php` (new) — signature `posts:cleanup-images {--dry-run}`; scan `Storage::disk()->allFiles('posts')`, diff against DB `featured_image` values, delete orphans
-- `routes/console.php` — schedule `posts:publish-scheduled` everyMinute, `posts:cleanup-images` weekly
+- ~~`app/Services/ImageOptimizer.php`~~ ✅ (new) — constructor injects `FilesystemManager`; methods: `optimize(UploadedFile, string): string`, `generateVariants(string, ?string): array` (reads from `config('images.*')`), `deleteWithVariants(string): void`, `getVariantUrls(string): array`; uses Intervention Image v3 GD driver
+- ~~`app/Observers/PostObserver.php`~~ ✅ (new) — `saved()` and `deleted()` call `Cache::forget("post:{$post->id}")` and `Cache::increment('blog:index:version')`; `deleted()` also calls `ImageOptimizer::deleteWithVariants()` wrapped in try/catch
+- ~~`app/Providers/AppServiceProvider.php`~~ ✅ — update `register()` to bind `ImageOptimizer` as singleton; update `boot()` to register `PostObserver`, use `CarbonImmutable`, prohibit destructive commands in production, set production password rules (min 12, mixed case, numbers, symbols, uncompromised)
+- ~~`app/Console/Commands/PublishScheduledPosts.php`~~ ✅ (new) — signature `posts:publish-scheduled`; query `Post::readyToPublish()->get()`, update each to Published with `published_at = now()`
+- ~~`app/Console/Commands/CleanupOrphanedImages.php`~~ ✅ (new) — signature `posts:cleanup-images {--dry-run}`; scan `Storage::disk()->allFiles('posts')`, diff against DB `featured_image` values, delete orphans
+- ~~`routes/console.php`~~ ✅ — schedule `posts:publish-scheduled` everyMinute, `posts:cleanup-images` weekly
 
 **Gotchas:**
 - Intervention Image v3 uses `ImageManager::gd()` static factory — not `new ImageManager(['driver' => 'gd'])`
@@ -108,22 +108,22 @@
 **Goal:** Complete server-side HTTP layer — validation, controllers, routes, Blade views, middleware updates.
 
 ### Files
-- `app/Http/Requests/Posts/StorePostRequest.php` — `title (required), content (required), excerpt (nullable max:500), status (Rule::enum(PostStatus)), featured_image (nullable file image max:5120), category_ids (nullable array of existing IDs), meta_title/description (nullable), scheduled_at (nullable date after:now), published_at (nullable date)`
-- `app/Http/Requests/Posts/UpdatePostRequest.php` — identical rules to Store
-- `app/Http/Requests/Categories/StoreCategoryRequest.php` — `name (required unique:categories.name), description (nullable)`
-- `app/Http/Requests/Categories/UpdateCategoryRequest.php` — same with `Rule::unique()->ignore($this->route('category'))`
-- `app/Http/Controllers/DashboardController.php` (new, invokable) — counts (total/published/draft posts, total categories), recent 5 posts (scoped to user or all for admin), popular 5 categories; returns `Inertia::render('Dashboard', [...])`
-- `app/Http/Controllers/BlogController.php` (new) — `index()` paginated published posts (15/page) with search/category filter + 5-min cache using version key; `show(Post $post)` checks published status (abort 404 if not), 10-min cache, 3 related posts
-- `app/Http/Controllers/PostController.php` (new, resource) — constructor injects `ImageOptimizer`; full CRUD + `autosave()` (JSON response) + `uploadImage()` (JSON response); policy gates via `$this->authorize()`
-- `app/Http/Controllers/CategoryController.php` (new) — index (withCount posts + can flags), store, update, destroy with policy gates
-- `app/Http/Controllers/SitemapController.php` (new, invokable) — returns Blade view with `Content-Type: application/xml`
-- `app/Http/Controllers/RssFeedController.php` (new, invokable) — returns Blade view with `Content-Type: application/rss+xml`
-- `app/Http/Middleware/HandleInertiaRequests.php` — add to shared array: `'flash' => ['success' => fn() => session('flash.success'), 'error' => fn() => session('flash.error')]`
-- `bootstrap/app.php` — add `withExceptions()` handler: map 404/403/500/503 to `Inertia::render('ErrorPage', ['status' => $status])`; map 419 to `back()->with('flash.error', '...')`
-- `routes/web.php` — replace static `Inertia::render('Dashboard')` with `DashboardController::class`; add blog/sitemap/feed routes; add `Route::resource('posts', ...)` + autosave + uploadImage routes; add `Route::resource('categories', ...)` for index/store/update/destroy; all post/category routes under `auth + verified` middleware
-- `resources/views/sitemap/index.blade.php` (new) — XML sitemap iterating `$posts` and `$categories`
-- `resources/views/feed/rss.blade.php` (new) — RSS 2.0 feed iterating `$posts`
-- Run: `php artisan wayfinder:generate`
+- ~~`app/Http/Requests/Posts/StorePostRequest.php`~~ ✅ `title (required), content (required), excerpt (nullable max:500), status (Rule::enum(PostStatus)), featured_image (nullable file image max:5120), category_ids (nullable array of existing IDs), meta_title/description (nullable), scheduled_at (nullable date after:now), published_at (nullable date)`
+- ~~`app/Http/Requests/Posts/UpdatePostRequest.php`~~ ✅ identical rules to Store but `scheduled_at` uses `after_or_equal:now`
+- ~~`app/Http/Requests/Categories/StoreCategoryRequest.php`~~ ✅ `name (required unique:categories.name), description (nullable)`
+- ~~`app/Http/Requests/Categories/UpdateCategoryRequest.php`~~ ✅ same with `Rule::unique()->ignore($this->route('category'))`
+- ~~`app/Http/Controllers/DashboardController.php`~~ ✅ (new, invokable) — counts (total/published/draft posts, total categories), recent 5 posts (scoped to user or all for admin), popular 5 categories; returns `Inertia::render('Dashboard', [...])`
+- ~~`app/Http/Controllers/BlogController.php`~~ ✅ (new) — `index()` paginated published posts (15/page) with search/category filter + 5-min cache using version key; `show(Post $post)` checks published status (abort 404 if not), 10-min cache, 3 related posts
+- ~~`app/Http/Controllers/PostController.php`~~ ✅ (new, resource) — constructor injects `ImageOptimizer`; full CRUD + `autosave()` (JSON response) + `uploadImage()` (JSON response); policy gates via `$this->authorize()`
+- ~~`app/Http/Controllers/CategoryController.php`~~ ✅ (new) — index (withCount posts + can flags), store, update, destroy with policy gates
+- ~~`app/Http/Controllers/SitemapController.php`~~ ✅ (new, invokable) — returns Blade view with `Content-Type: application/xml`
+- ~~`app/Http/Controllers/RssFeedController.php`~~ ✅ (new, invokable) — returns Blade view with `Content-Type: application/rss+xml`
+- ~~`app/Http/Middleware/HandleInertiaRequests.php`~~ ✅ — add to shared array: `'flash' => ['success' => fn() => session('flash.success'), 'error' => fn() => session('flash.error')]`
+- ~~`bootstrap/app.php`~~ ✅ — add `withExceptions()` handler: map 404/403/500/503 to `Inertia::render('ErrorPage', ['status' => $status])`; map 419 to `back()->with('flash.error', '...')`
+- ~~`routes/web.php`~~ ✅ — replace static `Inertia::render('Dashboard')` with `DashboardController::class`; add blog/sitemap/feed routes; add `Route::resource('posts', ...)` + autosave + uploadImage routes; add `Route::resource('categories', ...)` for index/store/update/destroy; all post/category routes under `auth + verified` middleware
+- ~~`resources/views/sitemap/index.blade.php`~~ ✅ (new) — XML sitemap iterating `$posts` and `$categories`
+- ~~`resources/views/feed/rss.blade.php`~~ ✅ (new) — RSS 2.0 feed iterating `$posts`
+- ~~Run: `php artisan wayfinder:generate`~~ ✅
 
 **Gotchas:**
 - `uploadImage` route must be defined BEFORE `Route::resource('posts', ...)` to prevent `{post}` binding from capturing it
@@ -141,10 +141,10 @@
 **Goal:** Write and pass all PHPUnit tests for every new backend controller.
 
 ### Files
-- `tests/Feature/DashboardTest.php` — update: assert `stats`, `recentPosts`, `popularCategories` props; add admin-vs-user stats test
-- `tests/Feature/Posts/PostControllerTest.php` (new) — cover: guest redirect, user sees own posts, admin sees all posts, create/store/edit/update/delete (happy + 403 for non-owner), autosave returns JSON, `readyToPublish` scope correctness, image upload validation
-- `tests/Feature/Categories/CategoryControllerTest.php` (new) — cover: any user sees index, only admin creates/updates/deletes, 403 for non-admin, auto-slug, unique name validation
-- `tests/Feature/Blog/BlogControllerTest.php` (new) — cover: index returns only published, search filter, category filter, pagination (15/page), show works for published, 404 for draft
+- ~~`tests/Feature/DashboardTest.php`~~ ✅ — update: assert `stats`, `recentPosts`, `popularCategories` props; add admin-vs-user stats test
+- ~~`tests/Feature/Posts/PostControllerTest.php`~~ ✅ (new) — cover: guest redirect, user sees own posts, admin sees all posts, create/store/edit/update/delete (happy + 403 for non-owner), autosave returns JSON, `readyToPublish` scope correctness, image upload validation
+- ~~`tests/Feature/Categories/CategoryControllerTest.php`~~ ✅ (new) — cover: any user sees index, only admin creates/updates/deletes, 403 for non-admin, auto-slug, unique name validation
+- ~~`tests/Feature/Blog/BlogControllerTest.php`~~ ✅ (new) — cover: index returns only published, search filter, category filter, pagination (15/page), show works for published, 404 for draft
 
 **Patterns (follow existing test conventions):**
 - Extend `Tests\TestCase`, use `RefreshDatabase`
