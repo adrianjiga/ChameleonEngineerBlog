@@ -47,19 +47,18 @@ class CleanupOrphanedImages extends Command
 
     private function knownPaths(): Collection
     {
-        $known = collect();
         $sizes = array_keys(config('images.sizes', []));
 
-        Post::whereNotNull('featured_image')->pluck('featured_image')
-            ->each(function (string $imagePath) use ($known, $sizes) {
-                $known->push($imagePath);
-
+        return Post::whereNotNull('featured_image')
+            ->pluck('featured_image')
+            ->flatMap(function (string $imagePath) use ($sizes): array {
                 $info = pathinfo($imagePath);
-                foreach ($sizes as $sizeName) {
-                    $known->push("{$info['dirname']}/{$info['filename']}_{$sizeName}.webp");
-                }
-            });
+                $variants = array_map(
+                    fn (string $sizeName) => "{$info['dirname']}/{$info['filename']}_{$sizeName}.webp",
+                    $sizes
+                );
 
-        return $known;
+                return [$imagePath, ...$variants];
+            });
     }
 }
