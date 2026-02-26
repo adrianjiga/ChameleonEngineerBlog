@@ -2,7 +2,7 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
-import AppLayout from '@/layouts/AppLayout.vue';
+import { destroy, store, update } from '@/actions/App/Http/Controllers/CategoryController';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -21,9 +21,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { destroy, store, update } from '@/actions/App/Http/Controllers/CategoryController';
-import { index as categoriesIndex } from '@/routes/categories';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
+import { index as categoriesIndex } from '@/routes/categories';
 import type { BreadcrumbItem, Category } from '@/types';
 
 defineProps<{

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { ArrowLeft, Clock, Pencil } from 'lucide-vue-next';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useSanitizedHtml } from '@/composables/useSanitizedHtml';
-import { edit, index as postsIndex } from '@/routes/posts';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
+import { edit, index as postsIndex } from '@/routes/posts';
 import type { BreadcrumbItem, Post } from '@/types';
 
 const props = defineProps<{ post: Post }>();

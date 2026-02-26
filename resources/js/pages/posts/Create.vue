@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Head, useForm } from '@inertiajs/vue3';
-import AppLayout from '@/layouts/AppLayout.vue';
+import { store } from '@/actions/App/Http/Controllers/PostController';
+import CoverImageUpload from '@/components/CoverImageUpload.vue';
+import RichTextEditor from '@/components/RichTextEditor.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -11,11 +13,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import CoverImageUpload from '@/components/CoverImageUpload.vue';
-import RichTextEditor from '@/components/RichTextEditor.vue';
-import { store } from '@/actions/App/Http/Controllers/PostController';
-import { index as postsIndex } from '@/routes/posts';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
+import { index as postsIndex } from '@/routes/posts';
 import type { BreadcrumbItem, Category } from '@/types';
 
 defineProps<{ categories: Category[] }>();

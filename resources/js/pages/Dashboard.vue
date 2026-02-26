@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { FileText, Tag } from 'lucide-vue-next';
-import AppLayout from '@/layouts/AppLayout.vue';
 import { Badge } from '@/components/ui/badge';
 import {
     Card,
@@ -18,8 +17,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { show as postShow } from '@/routes/posts';
+import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
+import { show as postShow } from '@/routes/posts';
 import type { BreadcrumbItem, Category, Post } from '@/types';
 
 defineProps<{

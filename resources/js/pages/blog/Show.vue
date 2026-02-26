@@ -3,8 +3,8 @@ import { Head, Link } from '@inertiajs/vue3';
 import { ArrowLeft, Clock } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
 import { useSanitizedHtml } from '@/composables/useSanitizedHtml';
-import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import { home } from '@/routes';
+import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import type { Post } from '@/types';
 
 defineProps<{
