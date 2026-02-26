@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Cache;
 
 class PostObserver
 {
+    public function __construct(private ImageOptimizer $imageOptimizer) {}
+
     public function saved(Post $post): void
     {
         Cache::forget("post:{$post->id}");
@@ -21,7 +23,7 @@ class PostObserver
 
         if ($post->featured_image) {
             try {
-                app(ImageOptimizer::class)->deleteWithVariants($post->featured_image);
+                $this->imageOptimizer->deleteWithVariants($post->featured_image);
             } catch (\Throwable) {
                 // Silently ignore — orphaned files are cleaned up by posts:cleanup-images
             }

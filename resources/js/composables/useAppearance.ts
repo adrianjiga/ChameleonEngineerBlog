@@ -56,13 +56,7 @@ const getStoredAppearance = () => {
     return localStorage.getItem('appearance') as Appearance | null;
 };
 
-const prefersDark = (): boolean => {
-    if (typeof window === 'undefined') {
-        return false;
-    }
-
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-};
+const prefersDark = (): boolean => mediaQuery()?.matches ?? false;
 
 const handleSystemThemeChange = () => {
     const currentAppearance = getStoredAppearance();

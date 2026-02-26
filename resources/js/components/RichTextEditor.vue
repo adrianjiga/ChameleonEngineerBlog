@@ -20,7 +20,7 @@ import {
     Undo,
     Redo,
 } from 'lucide-vue-next';
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
 
 const props = withDefaults(
     defineProps<{
@@ -77,7 +77,7 @@ function addImage() {
     }
 }
 
-const characterCount = () => editor.value?.storage.characterCount?.characters?.() ?? 0;
+const characterCount = computed(() => editor.value?.storage.characterCount?.characters?.() ?? 0);
 </script>
 
 <template>
@@ -200,7 +200,7 @@ const characterCount = () => editor.value?.storage.characterCount?.characters?.(
 
         <!-- Character count -->
         <div v-if="maxLength !== undefined" class="text-muted-foreground border-t px-4 py-1.5 text-right text-xs">
-            {{ characterCount() }} / {{ maxLength }}
+            {{ characterCount }} / {{ maxLength }}
         </div>
     </div>
 </template>
