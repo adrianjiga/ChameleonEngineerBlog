@@ -41,5 +41,10 @@ class DatabaseSeeder extends Seeder
                 $categories->random(rand(1, 3))->pluck('id')
             );
         });
+
+        $this->command?->info('✓ Seeding complete.');
+        $this->command?->info('  Admin credentials:');
+        $this->command?->info('  Email:    admin@example.com');
+        $this->command?->info('  Password: password');
     }
 }
