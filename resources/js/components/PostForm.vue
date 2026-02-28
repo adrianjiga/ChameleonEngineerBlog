@@ -5,7 +5,9 @@ import CoverImageUpload from '@/components/CoverImageUpload.vue';
 import RichTextEditor from '@/components/RichTextEditor.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import {
     Select,
     SelectContent,
@@ -57,12 +59,11 @@ function toggleCategory(id: number) {
             <Label for="title"
                 >Title <span class="text-destructive">*</span></Label
             >
-            <input
+            <Input
                 id="title"
                 v-model="form.title"
                 type="text"
                 placeholder="Post title"
-                class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
             />
             <p v-if="form.errors.title" class="text-sm text-destructive">
                 {{ form.errors.title }}
@@ -81,12 +82,12 @@ function toggleCategory(id: number) {
         <!-- Excerpt -->
         <div class="space-y-1.5">
             <Label for="excerpt">Excerpt</Label>
-            <textarea
+            <Textarea
                 id="excerpt"
                 v-model="form.excerpt"
                 rows="2"
                 placeholder="Short description (optional)"
-                class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+                class="resize-none"
             />
             <p v-if="form.errors.excerpt" class="text-sm text-destructive">
                 {{ form.errors.excerpt }}
@@ -131,11 +132,10 @@ function toggleCategory(id: number) {
 
             <div class="space-y-1.5">
                 <Label for="scheduled_at">Schedule At</Label>
-                <input
+                <Input
                     id="scheduled_at"
                     v-model="form.scheduled_at"
                     type="datetime-local"
-                    class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                 />
                 <p
                     v-if="form.errors.scheduled_at"
@@ -183,20 +183,19 @@ function toggleCategory(id: number) {
             <div class="mt-4 space-y-4">
                 <div class="space-y-1.5">
                     <Label for="meta_title">Meta Title</Label>
-                    <input
+                    <Input
                         id="meta_title"
                         v-model="form.meta_title"
                         type="text"
-                        class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                     />
                 </div>
                 <div class="space-y-1.5">
                     <Label for="meta_description">Meta Description</Label>
-                    <textarea
+                    <Textarea
                         id="meta_description"
                         v-model="form.meta_description"
                         rows="2"
-                        class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+                        class="resize-none"
                     />
                 </div>
             </div>

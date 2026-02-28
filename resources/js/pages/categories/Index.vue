@@ -16,7 +16,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import {
     Table,
     TableBody,
@@ -110,12 +112,11 @@ function confirmDelete(category: Category) {
                                         >*</span
                                     ></Label
                                 >
-                                <input
+                                <Input
                                     id="create-name"
                                     v-model="createForm.name"
                                     type="text"
                                     placeholder="Category name"
-                                    class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                                 />
                                 <p
                                     v-if="createForm.errors.name"
@@ -128,12 +129,12 @@ function confirmDelete(category: Category) {
                                 <Label for="create-description"
                                     >Description</Label
                                 >
-                                <textarea
+                                <Textarea
                                     id="create-description"
                                     v-model="createForm.description"
                                     rows="2"
                                     placeholder="Optional description"
-                                    class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+                                    class="resize-none"
                                 />
                             </div>
                             <DialogFooter>
@@ -229,11 +230,10 @@ function confirmDelete(category: Category) {
                         <Label for="edit-name"
                             >Name <span class="text-destructive">*</span></Label
                         >
-                        <input
+                        <Input
                             id="edit-name"
                             v-model="editForm.name"
                             type="text"
-                            class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                         />
                         <p
                             v-if="editForm.errors.name"
@@ -244,11 +244,11 @@ function confirmDelete(category: Category) {
                     </div>
                     <div class="space-y-1.5">
                         <Label for="edit-description">Description</Label>
-                        <textarea
+                        <Textarea
                             id="edit-description"
                             v-model="editForm.description"
                             rows="2"
-                            class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+                            class="resize-none"
                         />
                     </div>
                     <DialogFooter>
