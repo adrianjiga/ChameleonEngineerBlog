@@ -3,8 +3,8 @@ import { Head, Link } from '@inertiajs/vue3';
 import { ArrowLeft, Clock } from 'lucide-vue-next';
 import BlogHeader from '@/components/BlogHeader.vue';
 import { Badge } from '@/components/ui/badge';
-import { sanitizeHtml } from '@/lib/sanitize';
 import { formatDateLong } from '@/lib/date';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import type { Post } from '@/types';
 

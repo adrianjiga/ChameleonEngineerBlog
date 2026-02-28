@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/* eslint-disable vue/no-mutating-props -- InertiaForm is a reactive proxy designed to be mutated directly */
 import { Link } from '@inertiajs/vue3';
 import type { InertiaForm } from '@inertiajs/vue3';
 import CoverImageUpload from '@/components/CoverImageUpload.vue';
@@ -7,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
     Select,
     SelectContent,
@@ -15,6 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { index as postsIndex } from '@/routes/posts';
 import type { Category } from '@/types';
 
