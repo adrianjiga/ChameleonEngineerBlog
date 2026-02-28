@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { CheckCircle } from 'lucide-vue-next';
-import { ref, watch } from 'vue';
+import { onBeforeUnmount, ref, watch } from 'vue';
 import { update } from '@/actions/App/Http/Controllers/PostController';
 import CoverImageUpload from '@/components/CoverImageUpload.vue';
 import RichTextEditor from '@/components/RichTextEditor.vue';
@@ -83,6 +83,12 @@ watch(
         }, 2000);
     },
 );
+
+onBeforeUnmount(() => {
+    if (autosaveTimer) {
+        clearTimeout(autosaveTimer);
+    }
+});
 </script>
 
 <template>
