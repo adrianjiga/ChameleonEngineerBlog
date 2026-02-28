@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { store } from '@/actions/App/Http/Controllers/PostController';
 import CoverImageUpload from '@/components/CoverImageUpload.vue';
 import RichTextEditor from '@/components/RichTextEditor.vue';
@@ -231,7 +231,7 @@ function toggleCategory(id: number) {
                 <!-- Submit -->
                 <div class="flex justify-end gap-3">
                     <Button type="button" variant="outline" as-child>
-                        <a :href="postsIndex().url">Cancel</a>
+                        <Link :href="postsIndex().url">Cancel</Link>
                     </Button>
                     <Button type="submit" :disabled="form.processing">
                         {{ form.processing ? 'Saving...' : 'Create Post' }}
