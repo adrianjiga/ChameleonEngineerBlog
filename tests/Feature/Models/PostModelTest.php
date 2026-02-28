@@ -170,11 +170,15 @@ class PostModelTest extends TestCase
         $this->assertSame([], $post->featured_image_urls);
     }
 
-    public function test_featured_image_urls_returns_original_when_image_set(): void
+    public function test_featured_image_urls_returns_all_variants_when_image_set(): void
     {
         $post = $this->makePost(['featured_image' => 'posts/image.webp']);
 
-        $this->assertArrayHasKey('original', $post->featured_image_urls);
-        $this->assertSame('posts/image.webp', $post->featured_image_urls['original']);
+        $urls = $post->featured_image_urls;
+
+        $this->assertSame('posts/image.webp', $urls['original']);
+        $this->assertSame('posts/image_large.webp', $urls['large']);
+        $this->assertSame('posts/image_medium.webp', $urls['medium']);
+        $this->assertSame('posts/image_thumb.webp', $urls['thumb']);
     }
 }
