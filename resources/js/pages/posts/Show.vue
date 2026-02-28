@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { ArrowLeft, Clock, Pencil } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useSanitizedHtml } from '@/composables/useSanitizedHtml';
+import { sanitizeHtml } from '@/lib/sanitize';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { statusColor } from '@/lib/post-status';
 import { dashboard } from '@/routes';
@@ -18,7 +18,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: props.post.title },
 ];
 
-const { sanitize } = useSanitizedHtml();
 </script>
 
 <template>
@@ -89,7 +88,7 @@ const { sanitize } = useSanitizedHtml();
             <!-- Content -->
             <article
                 class="prose dark:prose-invert prose-sm max-w-none"
-                v-html="sanitize(post.content)"
+                v-html="sanitizeHtml(post.content)"
             />
         </div>
     </AppLayout>

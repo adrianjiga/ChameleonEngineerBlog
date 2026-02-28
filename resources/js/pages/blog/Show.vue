@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { ArrowLeft, Clock } from 'lucide-vue-next';
 import BlogHeader from '@/components/BlogHeader.vue';
 import { Badge } from '@/components/ui/badge';
-import { useSanitizedHtml } from '@/composables/useSanitizedHtml';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { formatDateLong } from '@/lib/date';
 import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import type { Post } from '@/types';
@@ -13,7 +13,6 @@ defineProps<{
     relatedPosts: Post[];
 }>();
 
-const { sanitize } = useSanitizedHtml();
 </script>
 
 <template>
@@ -74,7 +73,7 @@ const { sanitize } = useSanitizedHtml();
             <!-- Post content -->
             <article
                 class="prose dark:prose-invert prose-lg max-w-none"
-                v-html="sanitize(post.content)"
+                v-html="sanitizeHtml(post.content)"
             />
 
             <!-- Related posts -->
