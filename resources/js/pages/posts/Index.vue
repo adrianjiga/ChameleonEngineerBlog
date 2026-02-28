@@ -21,6 +21,8 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { formatDate } from '@/lib/date';
+import { statusColor } from '@/lib/post-status';
 import { dashboard } from '@/routes';
 import { create, edit, index as postsIndex } from '@/routes/posts';
 import type { BreadcrumbItem, PaginatedPosts, Post } from '@/types';
@@ -51,12 +53,6 @@ function applyFilters(status?: string) {
 function onStatusChange(value: string) {
     applyFilters(value === 'all' ? undefined : value);
 }
-
-const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
-    published: 'default',
-    draft: 'secondary',
-    unpublished: 'outline',
-};
 
 function confirmDelete(post: Post) {
     if (!confirm('Are you sure you want to delete this post?')) return;
@@ -172,11 +168,7 @@ function confirmDelete(post: Post) {
                                 </div>
                             </TableCell>
                             <TableCell class="text-muted-foreground">
-                                {{
-                                    new Date(
-                                        post.created_at,
-                                    ).toLocaleDateString()
-                                }}
+                                {{ formatDate(post.created_at) }}
                             </TableCell>
                             <TableCell>
                                 <div class="flex gap-1">

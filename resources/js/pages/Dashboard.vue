@@ -18,6 +18,8 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { formatDate } from '@/lib/date';
+import { statusColor } from '@/lib/post-status';
 import { dashboard } from '@/routes';
 import { show as postShow } from '@/routes/posts';
 import type { BreadcrumbItem, Category, Post } from '@/types';
@@ -37,11 +39,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: dashboard().url },
 ];
 
-const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
-    published: 'default',
-    draft: 'secondary',
-    unpublished: 'outline',
-};
 </script>
 
 <template>
@@ -160,11 +157,7 @@ const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
                                         </Badge>
                                     </TableCell>
                                     <TableCell class="text-muted-foreground">
-                                        {{
-                                            new Date(
-                                                post.created_at,
-                                            ).toLocaleDateString()
-                                        }}
+                                        {{ formatDate(post.created_at) }}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>

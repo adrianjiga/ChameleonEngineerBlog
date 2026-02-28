@@ -3,6 +3,7 @@ import { Head, Link, router } from '@inertiajs/vue3';
 import { Search } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { Badge } from '@/components/ui/badge';
+import { formatDate } from '@/lib/date';
 import { home } from '@/routes';
 import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import type { Category, PaginatedPosts } from '@/types';
@@ -175,13 +176,7 @@ function filterByCategory(slug: string | null) {
                         >
                             <span>{{ post.reading_time }} min read</span>
                             <span>·</span>
-                            <span>{{
-                                post.published_at
-                                    ? new Date(
-                                          post.published_at,
-                                      ).toLocaleDateString()
-                                    : ''
-                            }}</span>
+                            <span>{{ formatDate(post.published_at) }}</span>
                         </div>
                     </div>
                 </article>

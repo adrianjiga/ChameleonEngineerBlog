@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useSanitizedHtml } from '@/composables/useSanitizedHtml';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { statusColor } from '@/lib/post-status';
 import { dashboard } from '@/routes';
 import { edit, index as postsIndex } from '@/routes/posts';
 import type { BreadcrumbItem, Post } from '@/types';
@@ -16,12 +17,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Posts', href: postsIndex().url },
     { title: props.post.title },
 ];
-
-const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
-    published: 'default',
-    draft: 'secondary',
-    unpublished: 'outline',
-};
 
 const { sanitize } = useSanitizedHtml();
 </script>
