@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ImageIcon, Upload, X } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 
 const props = defineProps<{
     modelValue: File | null;
@@ -28,11 +28,18 @@ function validate(file: File): string | null {
     return null;
 }
 
+function revokePreview() {
+    if (preview.value && preview.value.startsWith('blob:')) {
+        URL.revokeObjectURL(preview.value);
+    }
+}
+
 function handleFile(file: File) {
     error.value = validate(file);
     if (error.value) {
         return;
     }
+    revokePreview();
     preview.value = URL.createObjectURL(file);
     emit('update:modelValue', file);
 }
@@ -50,10 +57,15 @@ function onDrop(event: DragEvent) {
 }
 
 function remove() {
+    revokePreview();
     preview.value = null;
     error.value = null;
     emit('update:modelValue', null);
 }
+
+onBeforeUnmount(() => {
+    revokePreview();
+});
 </script>
 
 <template>
