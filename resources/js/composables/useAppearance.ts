@@ -30,7 +30,7 @@ export function updateTheme(value: Appearance): void {
     }
 }
 
-const setCookie = (name: string, value: string, days = 365) => {
+function setCookie(name: string, value: string, days = 365): void {
     if (typeof document === 'undefined') {
         return;
     }
@@ -38,31 +38,33 @@ const setCookie = (name: string, value: string, days = 365) => {
     const maxAge = days * 24 * 60 * 60;
 
     document.cookie = `${name}=${value};path=/;max-age=${maxAge};SameSite=Lax`;
-};
+}
 
-const mediaQuery = () => {
+function mediaQuery(): MediaQueryList | null {
     if (typeof window === 'undefined') {
         return null;
     }
 
     return window.matchMedia('(prefers-color-scheme: dark)');
-};
+}
 
-const getStoredAppearance = () => {
+function getStoredAppearance(): Appearance | null {
     if (typeof window === 'undefined') {
         return null;
     }
 
     return localStorage.getItem('appearance') as Appearance | null;
-};
+}
 
-const prefersDark = (): boolean => mediaQuery()?.matches ?? false;
+function prefersDark(): boolean {
+    return mediaQuery()?.matches ?? false;
+}
 
-const handleSystemThemeChange = () => {
+function handleSystemThemeChange(): void {
     const currentAppearance = getStoredAppearance();
 
     updateTheme(currentAppearance || 'system');
-};
+}
 
 export function initializeTheme(): void {
     if (typeof window === 'undefined') {
