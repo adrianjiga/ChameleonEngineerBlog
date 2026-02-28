@@ -22,6 +22,8 @@ class PostController extends Controller
 
     public function index(Request $request): Response
     {
+        $this->authorize('viewAny', Post::class);
+
         $user = $request->user();
         $search = $request->string('search')->toString();
         $status = $request->string('status')->toString();
