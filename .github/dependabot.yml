@@ -1,0 +1,96 @@
+version: 2
+
+updates:
+  # ─── npm ──────────────────────────────────────────────────────────────────
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'sunday'
+    groups:
+      # Vue / Inertia core runtime
+      vue-inertia:
+        patterns:
+          - 'vue'
+          - '@inertiajs/*'
+          - 'reka-ui'
+          - '@vueuse/*'
+
+      # Tiptap rich-text editor and its extensions
+      tiptap:
+        patterns:
+          - '@tiptap/*'
+
+      # Tailwind CSS and its plugins / platform binaries
+      tailwindcss:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
+          - 'tailwind-merge'
+          - 'tw-animate-css'
+          - 'lightningcss-*'
+          - '@rollup/rollup-*'
+
+      # Vite build tooling
+      build-tools:
+        patterns:
+          - 'vite'
+          - '@vitejs/*'
+          - 'laravel-vite-plugin'
+          - '@laravel/*'
+          - 'typescript'
+          - 'vue-tsc'
+          - 'concurrently'
+
+      # ESLint + Prettier linting stack
+      linting:
+        patterns:
+          - 'eslint'
+          - '@eslint/*'
+          - 'eslint-*'
+          - '@vue/eslint-config-typescript'
+          - 'typescript-eslint'
+          - 'prettier'
+          - 'prettier-*'
+
+      # UI utility libraries
+      ui-utilities:
+        patterns:
+          - 'lucide-vue-next'
+          - 'class-variance-authority'
+          - 'clsx'
+          - 'dompurify'
+          - '@types/*'
+          - 'vue-input-otp'
+          - 'vue-sonner'
+
+  # ─── Composer ─────────────────────────────────────────────────────────────
+  - package-ecosystem: 'composer'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'sunday'
+    groups:
+      # Laravel first-party packages
+      laravel-ecosystem:
+        patterns:
+          - 'laravel/*'
+
+      # PHP testing stack
+      php-testing:
+        patterns:
+          - 'fakerphp/faker'
+          - 'mockery/mockery'
+          - 'phpunit/phpunit'
+          - 'nunomaduro/collision'
+
+      # Third-party PHP dependencies
+      php-dependencies:
+        patterns:
+          - 'inertiajs/*'
+          - 'intervention/*'
+          - 'league/*'
+          - 'resend/*'
+          - 'symfony/*'
+          - 'aws/*'
+          - 'brick/*'

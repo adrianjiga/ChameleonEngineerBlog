@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\PostStatus;
 use App\Models\Post;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
 
 class PublishScheduledPosts extends Command
 {
@@ -14,22 +15,20 @@ class PublishScheduledPosts extends Command
 
     public function handle(): int
     {
-        $posts = Post::readyToPublish()->get();
+        $count = Post::readyToPublish()->update([
+            'status' => PostStatus::Published,
+            'published_at' => now(),
+        ]);
 
-        if ($posts->isEmpty()) {
+        if ($count === 0) {
             $this->info('No scheduled posts are ready to publish.');
 
             return self::SUCCESS;
         }
 
-        foreach ($posts as $post) {
-            $post->update([
-                'status' => PostStatus::Published,
-                'published_at' => now(),
-            ]);
-        }
+        Cache::increment('blog:index:version');
 
-        $this->info("Published {$posts->count()} post(s).");
+        $this->info("Published {$count} post(s).");
 
         return self::SUCCESS;
     }

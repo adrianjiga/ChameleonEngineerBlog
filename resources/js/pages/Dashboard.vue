@@ -18,6 +18,8 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { formatDate } from '@/lib/date';
+import { statusColor } from '@/lib/post-status';
 import { dashboard } from '@/routes';
 import { show as postShow } from '@/routes/posts';
 import type { BreadcrumbItem, Category, Post } from '@/types';
@@ -37,11 +39,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: dashboard().url },
 ];
 
-const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
-    published: 'default',
-    draft: 'secondary',
-    unpublished: 'outline',
-};
 </script>
 
 <template>
@@ -54,10 +51,14 @@ const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
                 <Card>
                     <CardHeader class="pb-2">
                         <CardDescription>Total Posts</CardDescription>
-                        <CardTitle class="text-3xl">{{ stats.totalPosts }}</CardTitle>
+                        <CardTitle class="text-3xl">{{
+                            stats.totalPosts
+                        }}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p class="text-muted-foreground flex items-center gap-1 text-xs">
+                        <p
+                            class="flex items-center gap-1 text-xs text-muted-foreground"
+                        >
                             <FileText class="size-3" />
                             All posts you manage
                         </p>
@@ -67,30 +68,40 @@ const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
                 <Card>
                     <CardHeader class="pb-2">
                         <CardDescription>Published</CardDescription>
-                        <CardTitle class="text-3xl">{{ stats.publishedPosts }}</CardTitle>
+                        <CardTitle class="text-3xl">{{
+                            stats.publishedPosts
+                        }}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p class="text-muted-foreground text-xs">Live on the blog</p>
+                        <p class="text-xs text-muted-foreground">
+                            Live on the blog
+                        </p>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader class="pb-2">
                         <CardDescription>Drafts</CardDescription>
-                        <CardTitle class="text-3xl">{{ stats.draftPosts }}</CardTitle>
+                        <CardTitle class="text-3xl">{{
+                            stats.draftPosts
+                        }}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p class="text-muted-foreground text-xs">In progress</p>
+                        <p class="text-xs text-muted-foreground">In progress</p>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader class="pb-2">
                         <CardDescription>Categories</CardDescription>
-                        <CardTitle class="text-3xl">{{ stats.totalCategories }}</CardTitle>
+                        <CardTitle class="text-3xl">{{
+                            stats.totalCategories
+                        }}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p class="text-muted-foreground flex items-center gap-1 text-xs">
+                        <p
+                            class="flex items-center gap-1 text-xs text-muted-foreground"
+                        >
                             <Tag class="size-3" />
                             Content categories
                         </p>
@@ -116,11 +127,17 @@ const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
                             </TableHeader>
                             <TableBody>
                                 <TableRow v-if="recentPosts.length === 0">
-                                    <TableCell colspan="3" class="text-muted-foreground text-center">
+                                    <TableCell
+                                        colspan="3"
+                                        class="text-center text-muted-foreground"
+                                    >
                                         No posts yet
                                     </TableCell>
                                 </TableRow>
-                                <TableRow v-for="post in recentPosts" :key="post.id">
+                                <TableRow
+                                    v-for="post in recentPosts"
+                                    :key="post.id"
+                                >
                                     <TableCell class="font-medium">
                                         <Link
                                             :href="postShow({ id: post.id })"
@@ -130,12 +147,17 @@ const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
                                         </Link>
                                     </TableCell>
                                     <TableCell>
-                                        <Badge :variant="statusColor[post.status] ?? 'outline'">
+                                        <Badge
+                                            :variant="
+                                                statusColor[post.status] ??
+                                                'outline'
+                                            "
+                                        >
                                             {{ post.status }}
                                         </Badge>
                                     </TableCell>
                                     <TableCell class="text-muted-foreground">
-                                        {{ new Date(post.created_at).toLocaleDateString() }}
+                                        {{ formatDate(post.created_at) }}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
@@ -147,25 +169,39 @@ const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
                 <Card>
                     <CardHeader>
                         <CardTitle>Popular Categories</CardTitle>
-                        <CardDescription>Most used content categories</CardDescription>
+                        <CardDescription
+                            >Most used content categories</CardDescription
+                        >
                     </CardHeader>
                     <CardContent>
                         <Table>
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Category</TableHead>
-                                    <TableHead class="text-right">Posts</TableHead>
+                                    <TableHead class="text-right"
+                                        >Posts</TableHead
+                                    >
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 <TableRow v-if="popularCategories.length === 0">
-                                    <TableCell colspan="2" class="text-muted-foreground text-center">
+                                    <TableCell
+                                        colspan="2"
+                                        class="text-center text-muted-foreground"
+                                    >
                                         No categories yet
                                     </TableCell>
                                 </TableRow>
-                                <TableRow v-for="category in popularCategories" :key="category.id">
-                                    <TableCell class="font-medium">{{ category.name }}</TableCell>
-                                    <TableCell class="text-right">{{ category.posts_count ?? 0 }}</TableCell>
+                                <TableRow
+                                    v-for="category in popularCategories"
+                                    :key="category.id"
+                                >
+                                    <TableCell class="font-medium">{{
+                                        category.name
+                                    }}</TableCell>
+                                    <TableCell class="text-right">{{
+                                        category.posts_count ?? 0
+                                    }}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>

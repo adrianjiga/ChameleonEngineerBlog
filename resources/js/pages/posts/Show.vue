@@ -3,8 +3,9 @@ import { Head, Link } from '@inertiajs/vue3';
 import { ArrowLeft, Clock, Pencil } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useSanitizedHtml } from '@/composables/useSanitizedHtml';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { statusColor } from '@/lib/post-status';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { dashboard } from '@/routes';
 import { edit, index as postsIndex } from '@/routes/posts';
 import type { BreadcrumbItem, Post } from '@/types';
@@ -17,13 +18,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: props.post.title },
 ];
 
-const statusColor: Record<string, 'default' | 'secondary' | 'outline'> = {
-    published: 'default',
-    draft: 'secondary',
-    unpublished: 'outline',
-};
-
-const { sanitize } = useSanitizedHtml();
 </script>
 
 <template>
@@ -35,14 +29,19 @@ const { sanitize } = useSanitizedHtml();
             <div class="mb-6 flex items-start justify-between gap-4">
                 <div class="flex items-center gap-3">
                     <Button variant="ghost" size="icon-sm" as-child>
-                        <Link :href="postsIndex()">
+                        <Link :href="postsIndex()" aria-label="Back to posts">
                             <ArrowLeft class="size-4" />
                         </Link>
                     </Button>
                     <div>
                         <h1 class="text-xl font-semibold">{{ post.title }}</h1>
-                        <div class="text-muted-foreground mt-1 flex items-center gap-2 text-sm">
-                            <Badge :variant="statusColor[post.status] ?? 'outline'" class="text-xs">
+                        <div
+                            class="mt-1 flex items-center gap-2 text-sm text-muted-foreground"
+                        >
+                            <Badge
+                                :variant="statusColor[post.status] ?? 'outline'"
+                                class="text-xs"
+                            >
                                 {{ post.status }}
                             </Badge>
                             <span class="flex items-center gap-1">
@@ -61,7 +60,10 @@ const { sanitize } = useSanitizedHtml();
             </div>
 
             <!-- Categories -->
-            <div v-if="post.categories?.length" class="mb-4 flex flex-wrap gap-1">
+            <div
+                v-if="post.categories?.length"
+                class="mb-4 flex flex-wrap gap-1"
+            >
                 <Badge
                     v-for="cat in post.categories"
                     :key="cat.id"
@@ -72,7 +74,10 @@ const { sanitize } = useSanitizedHtml();
             </div>
 
             <!-- Featured image -->
-            <div v-if="post.featured_image" class="mb-6 overflow-hidden rounded-xl">
+            <div
+                v-if="post.featured_image"
+                class="mb-6 overflow-hidden rounded-xl"
+            >
                 <img
                     :src="post.featured_image_urls.large ?? post.featured_image"
                     :alt="post.title"
@@ -83,7 +88,7 @@ const { sanitize } = useSanitizedHtml();
             <!-- Content -->
             <article
                 class="prose dark:prose-invert prose-sm max-w-none"
-                v-html="sanitize(post.content)"
+                v-html="sanitizeHtml(post.content)"
             />
         </div>
     </AppLayout>

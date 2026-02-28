@@ -17,7 +17,7 @@ export type UseTwoFactorAuthReturn = {
     fetchRecoveryCodes: () => Promise<void>;
 };
 
-const fetchJson = async <T>(url: string): Promise<T> => {
+async function fetchJson<T>(url: string): Promise<T> {
     const response = await fetch(url, {
         headers: { Accept: 'application/json' },
     });
@@ -27,7 +27,7 @@ const fetchJson = async <T>(url: string): Promise<T> => {
     }
 
     return response.json();
-};
+}
 
 const errors = ref<string[]>([]);
 const manualSetupKey = ref<string | null>(null);
@@ -38,7 +38,7 @@ const hasSetupData = computed<boolean>(
     () => qrCodeSvg.value !== null && manualSetupKey.value !== null,
 );
 
-export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
+export function useTwoFactorAuth(): UseTwoFactorAuthReturn {
     const fetchQrCode = async (): Promise<void> => {
         try {
             const { svg } = await fetchJson<{ svg: string; url: string }>(
@@ -116,4 +116,4 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
         fetchSetupData,
         fetchRecoveryCodes,
     };
-};
+}

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { ArrowLeft, Clock } from 'lucide-vue-next';
+import BlogHeader from '@/components/BlogHeader.vue';
 import { Badge } from '@/components/ui/badge';
-import { useSanitizedHtml } from '@/composables/useSanitizedHtml';
-import { home } from '@/routes';
+import { formatDateLong } from '@/lib/date';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import type { Post } from '@/types';
 
@@ -12,29 +13,19 @@ defineProps<{
     relatedPosts: Post[];
 }>();
 
-const { sanitize } = useSanitizedHtml();
 </script>
 
 <template>
     <Head :title="post.title" />
 
-    <div class="bg-background min-h-screen">
-        <!-- Header -->
-        <header class="border-b">
-            <div class="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-                <Link :href="home()" class="text-xl font-bold">Chameleon Engineer</Link>
-                <nav class="flex gap-4 text-sm">
-                    <Link :href="home()" class="text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-                    <Link :href="blogIndex()" class="text-muted-foreground hover:text-foreground transition-colors">Blog</Link>
-                </nav>
-            </div>
-        </header>
+    <div class="min-h-screen bg-background">
+        <BlogHeader max-width="max-w-3xl" />
 
         <main class="mx-auto max-w-3xl px-4 py-10">
             <!-- Back link -->
             <Link
                 :href="blogIndex()"
-                class="text-muted-foreground hover:text-foreground mb-8 inline-flex items-center gap-1 text-sm transition-colors"
+                class="mb-8 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
                 <ArrowLeft class="size-4" />
                 Back to Blog
@@ -51,20 +42,27 @@ const { sanitize } = useSanitizedHtml();
                         {{ category.name }}
                     </Badge>
                 </div>
-                <h1 class="mb-4 text-4xl font-bold leading-tight">{{ post.title }}</h1>
-                <div class="text-muted-foreground flex items-center gap-3 text-sm">
+                <h1 class="mb-4 text-4xl leading-tight font-bold">
+                    {{ post.title }}
+                </h1>
+                <div
+                    class="flex items-center gap-3 text-sm text-muted-foreground"
+                >
                     <span class="flex items-center gap-1">
                         <Clock class="size-4" />
                         {{ post.reading_time }} min read
                     </span>
                     <span v-if="post.published_at">
-                        {{ new Date(post.published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) }}
+                        {{ formatDateLong(post.published_at) }}
                     </span>
                 </div>
             </header>
 
             <!-- Featured image -->
-            <div v-if="post.featured_image" class="mb-8 overflow-hidden rounded-xl">
+            <div
+                v-if="post.featured_image"
+                class="mb-8 overflow-hidden rounded-xl"
+            >
                 <img
                     :src="post.featured_image_urls.large ?? post.featured_image"
                     :alt="post.title"
@@ -75,7 +73,7 @@ const { sanitize } = useSanitizedHtml();
             <!-- Post content -->
             <article
                 class="prose dark:prose-invert prose-lg max-w-none"
-                v-html="sanitize(post.content)"
+                v-html="sanitizeHtml(post.content)"
             />
 
             <!-- Related posts -->
@@ -85,14 +83,17 @@ const { sanitize } = useSanitizedHtml();
                     <article
                         v-for="related in relatedPosts"
                         :key="related.id"
-                        class="border-border rounded-xl border p-4"
+                        class="rounded-xl border border-border p-4"
                     >
-                        <h3 class="line-clamp-2 font-medium leading-tight">
-                            <Link :href="blogShow(related)" class="hover:underline">
+                        <h3 class="line-clamp-2 leading-tight font-medium">
+                            <Link
+                                :href="blogShow(related)"
+                                class="hover:underline"
+                            >
                                 {{ related.title }}
                             </Link>
                         </h3>
-                        <p class="text-muted-foreground mt-1 text-xs">
+                        <p class="mt-1 text-xs text-muted-foreground">
                             {{ related.reading_time }} min read
                         </p>
                     </article>

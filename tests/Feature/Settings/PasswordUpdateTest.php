@@ -59,4 +59,34 @@ class PasswordUpdateTest extends TestCase
             ->assertSessionHasErrors('current_password')
             ->assertRedirect(route('user-password.edit'));
     }
+
+    public function test_password_update_fails_with_short_password(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->from(route('user-password.edit'))
+            ->put(route('user-password.update'), [
+                'current_password' => 'password',
+                'password' => 'short',
+                'password_confirmation' => 'short',
+            ]);
+
+        $response->assertSessionHasErrors('password');
+    }
+
+    public function test_password_update_fails_with_confirmation_mismatch(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->from(route('user-password.edit'))
+            ->put(route('user-password.update'), [
+                'current_password' => 'password',
+                'password' => 'new-password',
+                'password_confirmation' => 'different-password',
+            ]);
+
+        $response->assertSessionHasErrors('password');
+    }
 }

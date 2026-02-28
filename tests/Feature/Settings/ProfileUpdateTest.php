@@ -96,4 +96,47 @@ class ProfileUpdateTest extends TestCase
 
         $this->assertNotNull($user->fresh());
     }
+
+    public function test_profile_update_fails_with_duplicate_email(): void
+    {
+        $existingUser = \App\Models\User::factory()->create(['email' => 'taken@example.com']);
+        $user = \App\Models\User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->from(route('profile.edit'))
+            ->patch(route('profile.update'), [
+                'name' => 'Test User',
+                'email' => 'taken@example.com',
+            ]);
+
+        $response->assertSessionHasErrors('email');
+    }
+
+    public function test_profile_update_fails_with_missing_name(): void
+    {
+        $user = \App\Models\User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->from(route('profile.edit'))
+            ->patch(route('profile.update'), [
+                'name' => '',
+                'email' => 'test@example.com',
+            ]);
+
+        $response->assertSessionHasErrors('name');
+    }
+
+    public function test_profile_update_fails_with_invalid_email(): void
+    {
+        $user = \App\Models\User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->from(route('profile.edit'))
+            ->patch(route('profile.update'), [
+                'name' => 'Test User',
+                'email' => 'not-an-email',
+            ]);
+
+        $response->assertSessionHasErrors('email');
+    }
 }

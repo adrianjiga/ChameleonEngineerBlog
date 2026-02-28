@@ -22,6 +22,8 @@ class PostController extends Controller
 
     public function index(Request $request): Response
     {
+        $this->authorize('viewAny', Post::class);
+
         $user = $request->user();
         $search = $request->string('search')->toString();
         $status = $request->string('status')->toString();
@@ -101,6 +103,10 @@ class PostController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('featured_image')) {
+            if ($post->featured_image) {
+                $this->imageOptimizer->deleteWithVariants($post->featured_image);
+            }
+
             $data['featured_image'] = $this->imageOptimizer->optimize(
                 $request->file('featured_image')
             );
@@ -137,9 +143,9 @@ class PostController extends Controller
 
     public function uploadImage(Request $request): JsonResponse
     {
-        $request->validate(['image' => ['required', 'file', 'image', 'max:5120']]);
-
         $this->authorize('create', Post::class);
+
+        $request->validate(['image' => ['required', 'file', 'image', 'max:5120']]);
 
         $path = $this->imageOptimizer->optimize($request->file('image'));
 

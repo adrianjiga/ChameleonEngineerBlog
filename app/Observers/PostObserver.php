@@ -12,14 +12,12 @@ class PostObserver
 
     public function saved(Post $post): void
     {
-        Cache::forget("post:{$post->id}");
-        Cache::increment('blog:index:version');
+        $this->bustCache($post);
     }
 
     public function deleted(Post $post): void
     {
-        Cache::forget("post:{$post->id}");
-        Cache::increment('blog:index:version');
+        $this->bustCache($post);
 
         if ($post->featured_image) {
             try {
@@ -28,5 +26,11 @@ class PostObserver
                 // Silently ignore — orphaned files are cleaned up by posts:cleanup-images
             }
         }
+    }
+
+    private function bustCache(Post $post): void
+    {
+        Cache::forget("post:{$post->id}");
+        Cache::increment('blog:index:version');
     }
 }

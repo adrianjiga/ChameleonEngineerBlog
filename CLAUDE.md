@@ -6,8 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Chameleon Engineer Blog is a Laravel 12 + Inertia.js v2 + Vue 3 SPA. It uses Laravel Fortify for headless authentication (login, register, password reset, email verification, 2FA), Wayfinder for type-safe TypeScript route bindings, Tailwind CSS v4, and Reka UI (Shadcn-style) components.
 
-Installed packages: `intervention/image ^3.11`, `league/flysystem-aws-s3-v3 ^3.0`, `resend/resend-laravel ^1.0` (Composer); `@tiptap/vue-3` + extensions, `dompurify`, `vue-sonner`, `@types/dompurify` (NPM).
-
 ## Commands
 
 ```bash

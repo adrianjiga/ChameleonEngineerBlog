@@ -2,7 +2,11 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { destroy, store, update } from '@/actions/App/Http/Controllers/CategoryController';
+import {
+    destroy,
+    store,
+    update,
+} from '@/actions/App/Http/Controllers/CategoryController';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -12,6 +16,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
     Table,
@@ -21,6 +26,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { index as categoriesIndex } from '@/routes/categories';
@@ -70,9 +76,11 @@ function submitEdit() {
     });
 }
 
+const deleteForm = useForm({});
+
 function confirmDelete(category: Category) {
     if (!confirm(`Delete "${category.name}"? This cannot be undone.`)) return;
-    useForm({}).submit(destroy({ category: category.id }));
+    deleteForm.submit(destroy({ category: category.id }));
 }
 </script>
 
@@ -98,29 +106,47 @@ function confirmDelete(category: Category) {
                         </DialogHeader>
                         <form class="space-y-4" @submit.prevent="submitCreate">
                             <div class="space-y-1.5">
-                                <Label for="create-name">Name <span class="text-destructive">*</span></Label>
-                                <input
+                                <Label for="create-name"
+                                    >Name
+                                    <span class="text-destructive"
+                                        >*</span
+                                    ></Label
+                                >
+                                <Input
                                     id="create-name"
                                     v-model="createForm.name"
                                     type="text"
                                     placeholder="Category name"
-                                    class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
                                 />
-                                <p v-if="createForm.errors.name" class="text-destructive text-sm">{{ createForm.errors.name }}</p>
+                                <p
+                                    v-if="createForm.errors.name"
+                                    class="text-sm text-destructive"
+                                >
+                                    {{ createForm.errors.name }}
+                                </p>
                             </div>
                             <div class="space-y-1.5">
-                                <Label for="create-description">Description</Label>
-                                <textarea
+                                <Label for="create-description"
+                                    >Description</Label
+                                >
+                                <Textarea
                                     id="create-description"
                                     v-model="createForm.description"
                                     rows="2"
                                     placeholder="Optional description"
-                                    class="border-input bg-background focus:ring-ring w-full resize-none rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                                    class="resize-none"
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="submit" :disabled="createForm.processing">
-                                    {{ createForm.processing ? 'Creating...' : 'Create' }}
+                                <Button
+                                    type="submit"
+                                    :disabled="createForm.processing"
+                                >
+                                    {{
+                                        createForm.processing
+                                            ? 'Creating...'
+                                            : 'Create'
+                                    }}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -129,7 +155,7 @@ function confirmDelete(category: Category) {
             </div>
 
             <!-- Table -->
-            <div class="border-border rounded-xl border">
+            <div class="rounded-xl border border-border">
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -141,22 +167,35 @@ function confirmDelete(category: Category) {
                     </TableHeader>
                     <TableBody>
                         <TableRow v-if="categories.length === 0">
-                            <TableCell colspan="4" class="text-muted-foreground py-10 text-center">
+                            <TableCell
+                                colspan="4"
+                                class="py-10 text-center text-muted-foreground"
+                            >
                                 No categories yet.
                             </TableCell>
                         </TableRow>
-                        <TableRow v-for="category in categories" :key="category.id">
-                            <TableCell class="font-medium">{{ category.name }}</TableCell>
-                            <TableCell class="text-muted-foreground max-w-xs">
-                                <span class="line-clamp-1">{{ category.description ?? '—' }}</span>
+                        <TableRow
+                            v-for="category in categories"
+                            :key="category.id"
+                        >
+                            <TableCell class="font-medium">{{
+                                category.name
+                            }}</TableCell>
+                            <TableCell class="max-w-xs text-muted-foreground">
+                                <span class="line-clamp-1">{{
+                                    category.description ?? '—'
+                                }}</span>
                             </TableCell>
-                            <TableCell class="text-right">{{ category.posts_count ?? 0 }}</TableCell>
+                            <TableCell class="text-right">{{
+                                category.posts_count ?? 0
+                            }}</TableCell>
                             <TableCell>
                                 <div class="flex justify-end gap-1">
                                     <Button
                                         v-if="category.can.update"
                                         variant="ghost"
                                         size="icon-sm"
+                                        aria-label="Edit category"
                                         @click="openEdit(category)"
                                     >
                                         <Pencil class="size-4" />
@@ -166,6 +205,8 @@ function confirmDelete(category: Category) {
                                         variant="ghost"
                                         size="icon-sm"
                                         class="text-destructive hover:text-destructive"
+                                        :disabled="deleteForm.processing"
+                                        aria-label="Delete category"
                                         @click="confirmDelete(category)"
                                     >
                                         <Trash2 class="size-4" />
@@ -186,27 +227,37 @@ function confirmDelete(category: Category) {
                 </DialogHeader>
                 <form class="space-y-4" @submit.prevent="submitEdit">
                     <div class="space-y-1.5">
-                        <Label for="edit-name">Name <span class="text-destructive">*</span></Label>
-                        <input
+                        <Label for="edit-name"
+                            >Name <span class="text-destructive">*</span></Label
+                        >
+                        <Input
                             id="edit-name"
                             v-model="editForm.name"
                             type="text"
-                            class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
                         />
-                        <p v-if="editForm.errors.name" class="text-destructive text-sm">{{ editForm.errors.name }}</p>
+                        <p
+                            v-if="editForm.errors.name"
+                            class="text-sm text-destructive"
+                        >
+                            {{ editForm.errors.name }}
+                        </p>
                     </div>
                     <div class="space-y-1.5">
                         <Label for="edit-description">Description</Label>
-                        <textarea
+                        <Textarea
                             id="edit-description"
                             v-model="editForm.description"
                             rows="2"
-                            class="border-input bg-background focus:ring-ring w-full resize-none rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                            class="resize-none"
                         />
                     </div>
                     <DialogFooter>
                         <Button type="submit" :disabled="editForm.processing">
-                            {{ editForm.processing ? 'Saving...' : 'Save Changes' }}
+                            {{
+                                editForm.processing
+                                    ? 'Saving...'
+                                    : 'Save Changes'
+                            }}
                         </Button>
                     </DialogFooter>
                 </form>

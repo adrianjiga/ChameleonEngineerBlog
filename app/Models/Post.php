@@ -82,9 +82,17 @@ class Post extends Model
             return [];
         }
 
-        return [
-            'original' => $this->featured_image,
-        ];
+        $pathInfo = pathinfo($this->featured_image);
+        $dir = $pathInfo['dirname'];
+        $basename = $pathInfo['filename'];
+
+        $urls = ['original' => $this->featured_image];
+
+        foreach (array_keys(config('images.sizes', [])) as $sizeName) {
+            $urls[$sizeName] = "{$dir}/{$basename}_{$sizeName}.webp";
+        }
+
+        return $urls;
     }
 
     public function scopePublished(Builder $query): Builder

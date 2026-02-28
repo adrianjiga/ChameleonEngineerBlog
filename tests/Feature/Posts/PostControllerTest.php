@@ -264,4 +264,115 @@ class PostControllerTest extends TestCase
                 ->where('posts.data.0.title', 'Published')
             );
     }
+
+    public function test_show_renders_post_for_owner(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->for($user)->create();
+
+        $this->actingAs($user)
+            ->get(route('posts.show', $post))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('posts/Show', false));
+    }
+
+    public function test_show_is_forbidden_for_non_owner(): void
+    {
+        $user = User::factory()->create();
+        $other = User::factory()->create();
+        $post = Post::factory()->for($other)->create();
+
+        $this->actingAs($user)
+            ->get(route('posts.show', $post))
+            ->assertForbidden();
+    }
+
+    public function test_show_redirects_guests_to_login(): void
+    {
+        $post = Post::factory()->for(User::factory()->create())->create();
+
+        $this->get(route('posts.show', $post))->assertRedirect(route('login'));
+    }
+
+    public function test_admin_can_view_any_post(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $post = Post::factory()->for(User::factory()->create())->create();
+
+        $this->actingAs($admin)
+            ->get(route('posts.show', $post))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('posts/Show', false));
+    }
+
+    public function test_store_returns_success_flash_message(): void
+    {
+        $user = User::factory()->create();
+        $this->mock(ImageOptimizer::class);
+
+        $this->actingAs($user)
+            ->post(route('posts.store'), [
+                'title' => 'Flash Post',
+                'content' => 'Some content.',
+            ])
+            ->assertRedirect(route('posts.index'))
+            ->assertSessionHas('flash.success', 'Post created successfully.');
+    }
+
+    public function test_update_returns_success_flash_message(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->for($user)->create();
+        $this->mock(ImageOptimizer::class);
+
+        $this->actingAs($user)
+            ->put(route('posts.update', $post), [
+                'title' => 'Updated Title',
+                'content' => 'Updated content.',
+            ])
+            ->assertRedirect(route('posts.index'))
+            ->assertSessionHas('flash.success', 'Post updated successfully.');
+    }
+
+    public function test_destroy_returns_success_flash_message(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->for($user)->create();
+
+        $this->actingAs($user)
+            ->delete(route('posts.destroy', $post))
+            ->assertRedirect(route('posts.index'))
+            ->assertSessionHas('flash.success', 'Post deleted successfully.');
+    }
+
+    public function test_upload_image_redirects_guests(): void
+    {
+        $this->post(route('posts.upload-image'), [
+            'image' => UploadedFile::fake()->image('photo.jpg'),
+        ])->assertRedirect(route('login'));
+    }
+
+    public function test_upload_image_rejects_non_image_file(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->postJson(route('posts.upload-image'), [
+                'image' => UploadedFile::fake()->create('document.pdf', 100, 'application/pdf'),
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('image');
+    }
+
+    public function test_upload_image_rejects_oversized_file(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->postJson(route('posts.upload-image'), [
+                'image' => UploadedFile::fake()->image('large.jpg')->size(6000),
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('image');
+    }
 }

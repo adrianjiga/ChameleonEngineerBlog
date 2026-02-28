@@ -109,4 +109,22 @@ class CategoryPolicyTest extends TestCase
 
         $this->assertFalse($user->can('forceDelete', $category));
     }
+
+    // restore
+
+    public function test_admin_can_restore_categories(): void
+    {
+        $admin = $this->makeUser(isAdmin: true);
+        $category = $this->makeCategory();
+
+        $this->assertTrue($admin->can('restore', $category));
+    }
+
+    public function test_non_admin_cannot_restore_categories(): void
+    {
+        $user = $this->makeUser();
+        $category = $this->makeCategory();
+
+        $this->assertFalse($user->can('restore', $category));
+    }
 }
