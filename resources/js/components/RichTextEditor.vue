@@ -20,7 +20,13 @@ import {
     Undo,
     Redo,
 } from 'lucide-vue-next';
-import { computed, onBeforeUnmount, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { Input } from '@/components/ui/input';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from '@/components/ui/popover';
 
 const props = withDefaults(
     defineProps<{
@@ -63,18 +69,46 @@ watch(
     },
 );
 
-function setLink() {
-    const url = window.prompt('Enter URL');
-    if (url) {
-        editor.value?.chain().focus().setLink({ href: url }).run();
-    }
+const linkUrl = ref('');
+const linkOpen = ref(false);
+const imageUrl = ref('');
+const imageOpen = ref(false);
+const linkInput = ref<InstanceType<typeof Input> | null>(null);
+const imageInput = ref<InstanceType<typeof Input> | null>(null);
+
+function openLinkPopover() {
+    const existing = editor.value?.getAttributes('link').href ?? '';
+    linkUrl.value = existing;
+    linkOpen.value = true;
+    nextTick(() => {
+        (linkInput.value?.$el as HTMLInputElement | undefined)?.focus();
+    });
 }
 
-function addImage() {
-    const url = window.prompt('Enter image URL');
-    if (url) {
-        editor.value?.chain().focus().setImage({ src: url }).run();
+function submitLink() {
+    if (linkUrl.value) {
+        editor.value?.chain().focus().setLink({ href: linkUrl.value }).run();
+    } else {
+        editor.value?.chain().focus().unsetLink().run();
     }
+    linkOpen.value = false;
+    linkUrl.value = '';
+}
+
+function openImagePopover() {
+    imageUrl.value = '';
+    imageOpen.value = true;
+    nextTick(() => {
+        (imageInput.value?.$el as HTMLInputElement | undefined)?.focus();
+    });
+}
+
+function submitImage() {
+    if (imageUrl.value) {
+        editor.value?.chain().focus().setImage({ src: imageUrl.value }).run();
+    }
+    imageOpen.value = false;
+    imageUrl.value = '';
 }
 
 onBeforeUnmount(() => {
@@ -223,29 +257,71 @@ const characterCount = computed(
                 <Code2 class="size-4" />
             </button>
             <div class="mx-1 w-px self-stretch bg-border" />
-            <button
-                type="button"
-                :class="[
-                    'rounded p-1.5 transition-colors hover:bg-muted',
-                    editor?.isActive('link')
-                        ? 'bg-muted text-foreground'
-                        : 'text-muted-foreground',
-                ]"
-                :disabled="!editor"
-                aria-label="Insert link"
-                @click="setLink"
-            >
-                <LinkIcon class="size-4" />
-            </button>
-            <button
-                type="button"
-                class="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted"
-                :disabled="!editor"
-                aria-label="Insert image"
-                @click="addImage"
-            >
-                <ImageIcon class="size-4" />
-            </button>
+            <Popover v-model:open="linkOpen">
+                <PopoverTrigger as-child>
+                    <button
+                        type="button"
+                        :class="[
+                            'rounded p-1.5 transition-colors hover:bg-muted',
+                            editor?.isActive('link')
+                                ? 'bg-muted text-foreground'
+                                : 'text-muted-foreground',
+                        ]"
+                        :disabled="!editor"
+                        aria-label="Insert link"
+                        @click="openLinkPopover"
+                    >
+                        <LinkIcon class="size-4" />
+                    </button>
+                </PopoverTrigger>
+                <PopoverContent class="w-80 p-3" side="bottom" align="start">
+                    <form class="flex gap-2" @submit.prevent="submitLink">
+                        <Input
+                            ref="linkInput"
+                            v-model="linkUrl"
+                            type="url"
+                            placeholder="https://example.com"
+                            class="h-8 text-xs"
+                        />
+                        <button
+                            type="submit"
+                            class="shrink-0 rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground hover:bg-primary/90"
+                        >
+                            Apply
+                        </button>
+                    </form>
+                </PopoverContent>
+            </Popover>
+            <Popover v-model:open="imageOpen">
+                <PopoverTrigger as-child>
+                    <button
+                        type="button"
+                        class="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted"
+                        :disabled="!editor"
+                        aria-label="Insert image"
+                        @click="openImagePopover"
+                    >
+                        <ImageIcon class="size-4" />
+                    </button>
+                </PopoverTrigger>
+                <PopoverContent class="w-80 p-3" side="bottom" align="start">
+                    <form class="flex gap-2" @submit.prevent="submitImage">
+                        <Input
+                            ref="imageInput"
+                            v-model="imageUrl"
+                            type="url"
+                            placeholder="https://example.com/image.png"
+                            class="h-8 text-xs"
+                        />
+                        <button
+                            type="submit"
+                            class="shrink-0 rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground hover:bg-primary/90"
+                        >
+                            Insert
+                        </button>
+                    </form>
+                </PopoverContent>
+            </Popover>
             <div class="ml-auto flex gap-0.5">
                 <button
                     type="button"
