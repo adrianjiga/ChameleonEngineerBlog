@@ -74,9 +74,11 @@ function submitEdit() {
     });
 }
 
+const deleteForm = useForm({});
+
 function confirmDelete(category: Category) {
     if (!confirm(`Delete "${category.name}"? This cannot be undone.`)) return;
-    useForm({}).submit(destroy({ category: category.id }));
+    deleteForm.submit(destroy({ category: category.id }));
 }
 </script>
 
@@ -201,6 +203,7 @@ function confirmDelete(category: Category) {
                                         variant="ghost"
                                         size="icon-sm"
                                         class="text-destructive hover:text-destructive"
+                                        :disabled="deleteForm.processing"
                                         @click="confirmDelete(category)"
                                     >
                                         <Trash2 class="size-4" />

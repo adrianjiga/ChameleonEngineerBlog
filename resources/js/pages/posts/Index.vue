@@ -54,9 +54,11 @@ function onStatusChange(value: string) {
     applyFilters(value === 'all' ? undefined : value);
 }
 
+const deleteForm = useForm({});
+
 function confirmDelete(post: Post) {
     if (!confirm('Are you sure you want to delete this post?')) return;
-    useForm({}).submit(destroy(post));
+    deleteForm.submit(destroy(post));
 }
 </script>
 
@@ -185,6 +187,7 @@ function confirmDelete(post: Post) {
                                         variant="ghost"
                                         size="icon-sm"
                                         class="text-destructive hover:text-destructive"
+                                        :disabled="deleteForm.processing"
                                         @click="confirmDelete(post)"
                                     >
                                         <Trash2 class="size-4" />
