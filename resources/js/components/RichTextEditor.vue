@@ -99,6 +99,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Bold"
                 @click="editor?.chain().focus().toggleBold().run()"
             >
                 <Bold class="size-4" />
@@ -112,6 +113,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Italic"
                 @click="editor?.chain().focus().toggleItalic().run()"
             >
                 <Italic class="size-4" />
@@ -126,6 +128,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Heading 2"
                 @click="
                     editor?.chain().focus().toggleHeading({ level: 2 }).run()
                 "
@@ -141,6 +144,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Heading 3"
                 @click="
                     editor?.chain().focus().toggleHeading({ level: 3 }).run()
                 "
@@ -157,6 +161,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Bullet list"
                 @click="editor?.chain().focus().toggleBulletList().run()"
             >
                 <List class="size-4" />
@@ -170,6 +175,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Ordered list"
                 @click="editor?.chain().focus().toggleOrderedList().run()"
             >
                 <ListOrdered class="size-4" />
@@ -183,6 +189,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Blockquote"
                 @click="editor?.chain().focus().toggleBlockquote().run()"
             >
                 <Quote class="size-4" />
@@ -196,6 +203,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Inline code"
                 @click="editor?.chain().focus().toggleCode().run()"
             >
                 <Code class="size-4" />
@@ -209,6 +217,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Code block"
                 @click="editor?.chain().focus().toggleCodeBlock().run()"
             >
                 <Code2 class="size-4" />
@@ -223,6 +232,7 @@ const characterCount = computed(
                         : 'text-muted-foreground',
                 ]"
                 :disabled="!editor"
+                aria-label="Insert link"
                 @click="setLink"
             >
                 <LinkIcon class="size-4" />
@@ -231,6 +241,7 @@ const characterCount = computed(
                 type="button"
                 class="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted"
                 :disabled="!editor"
+                aria-label="Insert image"
                 @click="addImage"
             >
                 <ImageIcon class="size-4" />
@@ -240,6 +251,7 @@ const characterCount = computed(
                     type="button"
                     class="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted disabled:opacity-40"
                     :disabled="!editor?.can().undo()"
+                    aria-label="Undo"
                     @click="editor?.chain().focus().undo().run()"
                 >
                     <Undo class="size-4" />
@@ -248,6 +260,7 @@ const characterCount = computed(
                     type="button"
                     class="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted disabled:opacity-40"
                     :disabled="!editor?.can().redo()"
+                    aria-label="Redo"
                     @click="editor?.chain().focus().redo().run()"
                 >
                     <Redo class="size-4" />

@@ -30,7 +30,7 @@ const { sanitize } = useSanitizedHtml();
             <div class="mb-6 flex items-start justify-between gap-4">
                 <div class="flex items-center gap-3">
                     <Button variant="ghost" size="icon-sm" as-child>
-                        <Link :href="postsIndex()">
+                        <Link :href="postsIndex()" aria-label="Back to posts">
                             <ArrowLeft class="size-4" />
                         </Link>
                     </Button>

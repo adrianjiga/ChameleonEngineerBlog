@@ -80,6 +80,7 @@ onBeforeUnmount(() => {
             />
             <button
                 type="button"
+                aria-label="Remove cover image"
                 class="absolute top-2 right-2 rounded-full bg-background/80 p-1 backdrop-blur-sm transition-colors hover:bg-background"
                 @click="remove"
             >

@@ -194,6 +194,7 @@ function confirmDelete(category: Category) {
                                         v-if="category.can.update"
                                         variant="ghost"
                                         size="icon-sm"
+                                        aria-label="Edit category"
                                         @click="openEdit(category)"
                                     >
                                         <Pencil class="size-4" />
@@ -204,6 +205,7 @@ function confirmDelete(category: Category) {
                                         size="icon-sm"
                                         class="text-destructive hover:text-destructive"
                                         :disabled="deleteForm.processing"
+                                        aria-label="Delete category"
                                         @click="confirmDelete(category)"
                                     >
                                         <Trash2 class="size-4" />

@@ -179,7 +179,10 @@ function confirmDelete(post: Post) {
                                         size="icon-sm"
                                         as-child
                                     >
-                                        <Link :href="edit(post)">
+                                        <Link
+                                            :href="edit(post)"
+                                            aria-label="Edit post"
+                                        >
                                             <Pencil class="size-4" />
                                         </Link>
                                     </Button>
@@ -188,6 +191,7 @@ function confirmDelete(post: Post) {
                                         size="icon-sm"
                                         class="text-destructive hover:text-destructive"
                                         :disabled="deleteForm.processing"
+                                        aria-label="Delete post"
                                         @click="confirmDelete(post)"
                                     >
                                         <Trash2 class="size-4" />
