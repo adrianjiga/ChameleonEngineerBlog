@@ -2,9 +2,9 @@
 import { Head, Link, router } from '@inertiajs/vue3';
 import { Search } from 'lucide-vue-next';
 import { ref } from 'vue';
+import BlogHeader from '@/components/BlogHeader.vue';
 import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/date';
-import { home } from '@/routes';
 import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import type { Category, PaginatedPosts } from '@/types';
 
@@ -40,28 +40,7 @@ function filterByCategory(slug: string | null) {
     <Head title="Blog" />
 
     <div class="min-h-screen bg-background">
-        <!-- Header -->
-        <header class="border-b">
-            <div
-                class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4"
-            >
-                <Link :href="home()" class="text-xl font-bold"
-                    >Chameleon Engineer</Link
-                >
-                <nav class="flex gap-4 text-sm">
-                    <Link
-                        :href="home()"
-                        class="text-muted-foreground transition-colors hover:text-foreground"
-                        >Home</Link
-                    >
-                    <Link
-                        :href="blogIndex()"
-                        class="font-medium text-foreground"
-                        >Blog</Link
-                    >
-                </nav>
-            </div>
-        </header>
+        <BlogHeader />
 
         <main class="mx-auto max-w-5xl px-4 py-10">
             <!-- Hero -->

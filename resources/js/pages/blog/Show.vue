@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import { ArrowLeft, Clock } from 'lucide-vue-next';
+import BlogHeader from '@/components/BlogHeader.vue';
 import { Badge } from '@/components/ui/badge';
 import { useSanitizedHtml } from '@/composables/useSanitizedHtml';
 import { formatDateLong } from '@/lib/date';
-import { home } from '@/routes';
 import { index as blogIndex, show as blogShow } from '@/routes/blog';
 import type { Post } from '@/types';
 
@@ -20,28 +20,7 @@ const { sanitize } = useSanitizedHtml();
     <Head :title="post.title" />
 
     <div class="min-h-screen bg-background">
-        <!-- Header -->
-        <header class="border-b">
-            <div
-                class="mx-auto flex max-w-3xl items-center justify-between px-4 py-4"
-            >
-                <Link :href="home()" class="text-xl font-bold"
-                    >Chameleon Engineer</Link
-                >
-                <nav class="flex gap-4 text-sm">
-                    <Link
-                        :href="home()"
-                        class="text-muted-foreground transition-colors hover:text-foreground"
-                        >Home</Link
-                    >
-                    <Link
-                        :href="blogIndex()"
-                        class="text-muted-foreground transition-colors hover:text-foreground"
-                        >Blog</Link
-                    >
-                </nav>
-            </div>
-        </header>
+        <BlogHeader max-width="max-w-3xl" />
 
         <main class="mx-auto max-w-3xl px-4 py-10">
             <!-- Back link -->
