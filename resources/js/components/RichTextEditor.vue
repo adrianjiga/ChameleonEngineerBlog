@@ -77,16 +77,23 @@ function addImage() {
     }
 }
 
-const characterCount = computed(() => editor.value?.storage.characterCount?.characters?.() ?? 0);
+const characterCount = computed(
+    () => editor.value?.storage.characterCount?.characters?.() ?? 0,
+);
 </script>
 
 <template>
-    <div class="border-input overflow-hidden rounded-md border">
+    <div class="overflow-hidden rounded-md border border-input">
         <!-- Toolbar -->
-        <div class="bg-muted/50 flex flex-wrap gap-0.5 border-b p-1.5">
+        <div class="flex flex-wrap gap-0.5 border-b bg-muted/50 p-1.5">
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('bold') ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('bold')
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
                 @click="editor?.chain().focus().toggleBold().run()"
             >
@@ -94,33 +101,57 @@ const characterCount = computed(() => editor.value?.storage.characterCount?.char
             </button>
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('italic') ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('italic')
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
                 @click="editor?.chain().focus().toggleItalic().run()"
             >
                 <Italic class="size-4" />
             </button>
-            <div class="bg-border mx-1 w-px self-stretch" />
+            <div class="mx-1 w-px self-stretch bg-border" />
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('heading', { level: 2 }) ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('heading', { level: 2 })
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
-                @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()"
+                @click="
+                    editor?.chain().focus().toggleHeading({ level: 2 }).run()
+                "
             >
                 <Heading2 class="size-4" />
             </button>
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('heading', { level: 3 }) ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('heading', { level: 3 })
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
-                @click="editor?.chain().focus().toggleHeading({ level: 3 }).run()"
+                @click="
+                    editor?.chain().focus().toggleHeading({ level: 3 }).run()
+                "
             >
                 <Heading3 class="size-4" />
             </button>
-            <div class="bg-border mx-1 w-px self-stretch" />
+            <div class="mx-1 w-px self-stretch bg-border" />
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('bulletList') ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('bulletList')
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
                 @click="editor?.chain().focus().toggleBulletList().run()"
             >
@@ -128,7 +159,12 @@ const characterCount = computed(() => editor.value?.storage.characterCount?.char
             </button>
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('orderedList') ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('orderedList')
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
                 @click="editor?.chain().focus().toggleOrderedList().run()"
             >
@@ -136,7 +172,12 @@ const characterCount = computed(() => editor.value?.storage.characterCount?.char
             </button>
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('blockquote') ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('blockquote')
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
                 @click="editor?.chain().focus().toggleBlockquote().run()"
             >
@@ -144,7 +185,12 @@ const characterCount = computed(() => editor.value?.storage.characterCount?.char
             </button>
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('code') ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('code')
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
                 @click="editor?.chain().focus().toggleCode().run()"
             >
@@ -152,16 +198,26 @@ const characterCount = computed(() => editor.value?.storage.characterCount?.char
             </button>
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('codeBlock') ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('codeBlock')
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
                 @click="editor?.chain().focus().toggleCodeBlock().run()"
             >
                 <Code2 class="size-4" />
             </button>
-            <div class="bg-border mx-1 w-px self-stretch" />
+            <div class="mx-1 w-px self-stretch bg-border" />
             <button
                 type="button"
-                :class="['rounded p-1.5 transition-colors hover:bg-muted', editor?.isActive('link') ? 'bg-muted text-foreground' : 'text-muted-foreground']"
+                :class="[
+                    'rounded p-1.5 transition-colors hover:bg-muted',
+                    editor?.isActive('link')
+                        ? 'bg-muted text-foreground'
+                        : 'text-muted-foreground',
+                ]"
                 :disabled="!editor"
                 @click="setLink"
             >
@@ -169,7 +225,7 @@ const characterCount = computed(() => editor.value?.storage.characterCount?.char
             </button>
             <button
                 type="button"
-                class="text-muted-foreground rounded p-1.5 transition-colors hover:bg-muted"
+                class="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted"
                 :disabled="!editor"
                 @click="addImage"
             >
@@ -178,7 +234,7 @@ const characterCount = computed(() => editor.value?.storage.characterCount?.char
             <div class="ml-auto flex gap-0.5">
                 <button
                     type="button"
-                    class="text-muted-foreground rounded p-1.5 transition-colors hover:bg-muted disabled:opacity-40"
+                    class="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted disabled:opacity-40"
                     :disabled="!editor?.can().undo()"
                     @click="editor?.chain().focus().undo().run()"
                 >
@@ -186,7 +242,7 @@ const characterCount = computed(() => editor.value?.storage.characterCount?.char
                 </button>
                 <button
                     type="button"
-                    class="text-muted-foreground rounded p-1.5 transition-colors hover:bg-muted disabled:opacity-40"
+                    class="rounded p-1.5 text-muted-foreground transition-colors hover:bg-muted disabled:opacity-40"
                     :disabled="!editor?.can().redo()"
                     @click="editor?.chain().focus().redo().run()"
                 >
@@ -199,7 +255,10 @@ const characterCount = computed(() => editor.value?.storage.characterCount?.char
         <EditorContent :editor="editor" />
 
         <!-- Character count -->
-        <div v-if="maxLength !== undefined" class="text-muted-foreground border-t px-4 py-1.5 text-right text-xs">
+        <div
+            v-if="maxLength !== undefined"
+            class="border-t px-4 py-1.5 text-right text-xs text-muted-foreground"
+        >
             {{ characterCount }} / {{ maxLength }}
         </div>
     </div>

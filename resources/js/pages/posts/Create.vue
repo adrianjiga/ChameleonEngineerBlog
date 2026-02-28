@@ -62,22 +62,39 @@ function toggleCategory(id: number) {
             <form class="space-y-6" @submit.prevent="submit">
                 <!-- Title -->
                 <div class="space-y-1.5">
-                    <Label for="title">Title <span class="text-destructive">*</span></Label>
+                    <Label for="title"
+                        >Title <span class="text-destructive">*</span></Label
+                    >
                     <input
                         id="title"
                         v-model="form.title"
                         type="text"
                         placeholder="Post title"
-                        class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                        class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                     />
-                    <p v-if="form.errors.title" class="text-destructive text-sm">{{ form.errors.title }}</p>
+                    <p
+                        v-if="form.errors.title"
+                        class="text-sm text-destructive"
+                    >
+                        {{ form.errors.title }}
+                    </p>
                 </div>
 
                 <!-- Content -->
                 <div class="space-y-1.5">
-                    <Label>Content <span class="text-destructive">*</span></Label>
-                    <RichTextEditor v-model="form.content" placeholder="Start writing your post..." />
-                    <p v-if="form.errors.content" class="text-destructive text-sm">{{ form.errors.content }}</p>
+                    <Label
+                        >Content <span class="text-destructive">*</span></Label
+                    >
+                    <RichTextEditor
+                        v-model="form.content"
+                        placeholder="Start writing your post..."
+                    />
+                    <p
+                        v-if="form.errors.content"
+                        class="text-sm text-destructive"
+                    >
+                        {{ form.errors.content }}
+                    </p>
                 </div>
 
                 <!-- Excerpt -->
@@ -88,16 +105,26 @@ function toggleCategory(id: number) {
                         v-model="form.excerpt"
                         rows="2"
                         placeholder="Short description (optional)"
-                        class="border-input bg-background focus:ring-ring w-full resize-none rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                        class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                     />
-                    <p v-if="form.errors.excerpt" class="text-destructive text-sm">{{ form.errors.excerpt }}</p>
+                    <p
+                        v-if="form.errors.excerpt"
+                        class="text-sm text-destructive"
+                    >
+                        {{ form.errors.excerpt }}
+                    </p>
                 </div>
 
                 <!-- Cover image -->
                 <div class="space-y-1.5">
                     <Label>Cover Image</Label>
                     <CoverImageUpload v-model="form.featured_image" />
-                    <p v-if="form.errors.featured_image" class="text-destructive text-sm">{{ form.errors.featured_image }}</p>
+                    <p
+                        v-if="form.errors.featured_image"
+                        class="text-sm text-destructive"
+                    >
+                        {{ form.errors.featured_image }}
+                    </p>
                 </div>
 
                 <!-- Status + Scheduled at -->
@@ -110,11 +137,20 @@ function toggleCategory(id: number) {
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="draft">Draft</SelectItem>
-                                <SelectItem value="published">Published</SelectItem>
-                                <SelectItem value="unpublished">Unpublished</SelectItem>
+                                <SelectItem value="published"
+                                    >Published</SelectItem
+                                >
+                                <SelectItem value="unpublished"
+                                    >Unpublished</SelectItem
+                                >
                             </SelectContent>
                         </Select>
-                        <p v-if="form.errors.status" class="text-destructive text-sm">{{ form.errors.status }}</p>
+                        <p
+                            v-if="form.errors.status"
+                            class="text-sm text-destructive"
+                        >
+                            {{ form.errors.status }}
+                        </p>
                     </div>
 
                     <div class="space-y-1.5">
@@ -123,9 +159,14 @@ function toggleCategory(id: number) {
                             id="scheduled_at"
                             v-model="form.scheduled_at"
                             type="datetime-local"
-                            class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                            class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                         />
-                        <p v-if="form.errors.scheduled_at" class="text-destructive text-sm">{{ form.errors.scheduled_at }}</p>
+                        <p
+                            v-if="form.errors.scheduled_at"
+                            class="text-sm text-destructive"
+                        >
+                            {{ form.errors.scheduled_at }}
+                        </p>
                     </div>
                 </div>
 
@@ -143,15 +184,26 @@ function toggleCategory(id: number) {
                                 :checked="form.category_ids.includes(cat.id)"
                                 @update:checked="toggleCategory(cat.id)"
                             />
-                            <Label :for="`cat-${cat.id}`" class="cursor-pointer font-normal">{{ cat.name }}</Label>
+                            <Label
+                                :for="`cat-${cat.id}`"
+                                class="cursor-pointer font-normal"
+                                >{{ cat.name }}</Label
+                            >
                         </div>
                     </div>
-                    <p v-if="form.errors.category_ids" class="text-destructive text-sm">{{ form.errors.category_ids }}</p>
+                    <p
+                        v-if="form.errors.category_ids"
+                        class="text-sm text-destructive"
+                    >
+                        {{ form.errors.category_ids }}
+                    </p>
                 </div>
 
                 <!-- SEO -->
-                <details class="border-input rounded-md border p-4">
-                    <summary class="cursor-pointer text-sm font-medium">SEO Settings</summary>
+                <details class="rounded-md border border-input p-4">
+                    <summary class="cursor-pointer text-sm font-medium">
+                        SEO Settings
+                    </summary>
                     <div class="mt-4 space-y-4">
                         <div class="space-y-1.5">
                             <Label for="meta_title">Meta Title</Label>
@@ -159,16 +211,18 @@ function toggleCategory(id: number) {
                                 id="meta_title"
                                 v-model="form.meta_title"
                                 type="text"
-                                class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                                class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                             />
                         </div>
                         <div class="space-y-1.5">
-                            <Label for="meta_description">Meta Description</Label>
+                            <Label for="meta_description"
+                                >Meta Description</Label
+                            >
                             <textarea
                                 id="meta_description"
                                 v-model="form.meta_description"
                                 rows="2"
-                                class="border-input bg-background focus:ring-ring w-full resize-none rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                                class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                             />
                         </div>
                     </div>

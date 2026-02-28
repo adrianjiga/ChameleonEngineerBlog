@@ -60,10 +60,15 @@ function remove() {
     <div class="space-y-2">
         <!-- Preview -->
         <div v-if="preview" class="relative overflow-hidden rounded-lg">
-            <img :src="preview" alt="Cover image preview" class="w-full object-cover" style="max-height: 240px" />
+            <img
+                :src="preview"
+                alt="Cover image preview"
+                class="w-full object-cover"
+                style="max-height: 240px"
+            />
             <button
                 type="button"
-                class="bg-background/80 hover:bg-background absolute top-2 right-2 rounded-full p-1 backdrop-blur-sm transition-colors"
+                class="absolute top-2 right-2 rounded-full bg-background/80 p-1 backdrop-blur-sm transition-colors hover:bg-background"
                 @click="remove"
             >
                 <X class="size-4" />
@@ -75,23 +80,29 @@ function remove() {
             v-else
             :class="[
                 'flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed p-8 transition-colors',
-                isDragging ? 'border-primary bg-primary/5' : 'border-input hover:border-primary/50 hover:bg-muted/50',
+                isDragging
+                    ? 'border-primary bg-primary/5'
+                    : 'border-input hover:border-primary/50 hover:bg-muted/50',
             ]"
             @dragover.prevent="isDragging = true"
             @dragleave.prevent="isDragging = false"
             @drop.prevent="onDrop"
         >
-            <div class="bg-muted flex size-12 items-center justify-center rounded-full">
-                <ImageIcon class="text-muted-foreground size-6" />
+            <div
+                class="flex size-12 items-center justify-center rounded-full bg-muted"
+            >
+                <ImageIcon class="size-6 text-muted-foreground" />
             </div>
             <div class="text-center">
                 <p class="text-sm font-medium">
                     <span class="text-primary">Click to upload</span>
                     <span class="text-muted-foreground"> or drag and drop</span>
                 </p>
-                <p class="text-muted-foreground text-xs">JPEG, PNG, GIF, WebP — max {{ MAX_SIZE_MB }}MB</p>
+                <p class="text-xs text-muted-foreground">
+                    JPEG, PNG, GIF, WebP — max {{ MAX_SIZE_MB }}MB
+                </p>
             </div>
-            <Upload class="text-muted-foreground size-4" />
+            <Upload class="size-4 text-muted-foreground" />
             <input
                 type="file"
                 accept="image/jpeg,image/png,image/gif,image/webp"
@@ -100,6 +111,6 @@ function remove() {
             />
         </label>
 
-        <p v-if="error" class="text-destructive text-sm">{{ error }}</p>
+        <p v-if="error" class="text-sm text-destructive">{{ error }}</p>
     </div>
 </template>

@@ -41,8 +41,13 @@ const { sanitize } = useSanitizedHtml();
                     </Button>
                     <div>
                         <h1 class="text-xl font-semibold">{{ post.title }}</h1>
-                        <div class="text-muted-foreground mt-1 flex items-center gap-2 text-sm">
-                            <Badge :variant="statusColor[post.status] ?? 'outline'" class="text-xs">
+                        <div
+                            class="mt-1 flex items-center gap-2 text-sm text-muted-foreground"
+                        >
+                            <Badge
+                                :variant="statusColor[post.status] ?? 'outline'"
+                                class="text-xs"
+                            >
                                 {{ post.status }}
                             </Badge>
                             <span class="flex items-center gap-1">
@@ -61,7 +66,10 @@ const { sanitize } = useSanitizedHtml();
             </div>
 
             <!-- Categories -->
-            <div v-if="post.categories?.length" class="mb-4 flex flex-wrap gap-1">
+            <div
+                v-if="post.categories?.length"
+                class="mb-4 flex flex-wrap gap-1"
+            >
                 <Badge
                     v-for="cat in post.categories"
                     :key="cat.id"
@@ -72,7 +80,10 @@ const { sanitize } = useSanitizedHtml();
             </div>
 
             <!-- Featured image -->
-            <div v-if="post.featured_image" class="mb-6 overflow-hidden rounded-xl">
+            <div
+                v-if="post.featured_image"
+                class="mb-6 overflow-hidden rounded-xl"
+            >
                 <img
                     :src="post.featured_image_urls.large ?? post.featured_image"
                     :alt="post.title"

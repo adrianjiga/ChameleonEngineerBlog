@@ -23,15 +23,17 @@ const message = messages[props.status] ?? 'An unexpected error occurred.';
 </script>
 
 <template>
-    <div class="flex min-h-screen flex-col items-center justify-center gap-6 text-center">
-        <p class="text-muted-foreground text-8xl font-bold">{{ status }}</p>
+    <div
+        class="flex min-h-screen flex-col items-center justify-center gap-6 text-center"
+    >
+        <p class="text-8xl font-bold text-muted-foreground">{{ status }}</p>
         <div class="space-y-2">
             <h1 class="text-2xl font-semibold">{{ title }}</h1>
             <p class="text-muted-foreground">{{ message }}</p>
         </div>
         <Link
             :href="home()"
-            class="bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-4 py-2 text-sm font-medium transition-colors"
+            class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
         >
             Go Home
         </Link>

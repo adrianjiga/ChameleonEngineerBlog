@@ -71,9 +71,13 @@ watch(
                     preserveScroll: true,
                     onSuccess: () => {
                         autosaveStatus.value = 'saved';
-                        setTimeout(() => { autosaveStatus.value = 'idle'; }, 2000);
+                        setTimeout(() => {
+                            autosaveStatus.value = 'idle';
+                        }, 2000);
                     },
-                    onError: () => { autosaveStatus.value = 'idle'; },
+                    onError: () => {
+                        autosaveStatus.value = 'idle';
+                    },
                 },
             );
         }, 2000);
@@ -90,9 +94,12 @@ watch(
                 <h1 class="text-2xl font-semibold">Edit Post</h1>
                 <span
                     v-if="autosaveStatus !== 'idle'"
-                    class="text-muted-foreground flex items-center gap-1.5 text-sm"
+                    class="flex items-center gap-1.5 text-sm text-muted-foreground"
                 >
-                    <CheckCircle v-if="autosaveStatus === 'saved'" class="size-4 text-green-500" />
+                    <CheckCircle
+                        v-if="autosaveStatus === 'saved'"
+                        class="size-4 text-green-500"
+                    />
                     {{ autosaveStatus === 'saving' ? 'Saving...' : 'Saved' }}
                 </span>
             </div>
@@ -100,21 +107,35 @@ watch(
             <form class="space-y-6" @submit.prevent="submit">
                 <!-- Title -->
                 <div class="space-y-1.5">
-                    <Label for="title">Title <span class="text-destructive">*</span></Label>
+                    <Label for="title"
+                        >Title <span class="text-destructive">*</span></Label
+                    >
                     <input
                         id="title"
                         v-model="form.title"
                         type="text"
-                        class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                        class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                     />
-                    <p v-if="form.errors.title" class="text-destructive text-sm">{{ form.errors.title }}</p>
+                    <p
+                        v-if="form.errors.title"
+                        class="text-sm text-destructive"
+                    >
+                        {{ form.errors.title }}
+                    </p>
                 </div>
 
                 <!-- Content -->
                 <div class="space-y-1.5">
-                    <Label>Content <span class="text-destructive">*</span></Label>
+                    <Label
+                        >Content <span class="text-destructive">*</span></Label
+                    >
                     <RichTextEditor v-model="form.content" />
-                    <p v-if="form.errors.content" class="text-destructive text-sm">{{ form.errors.content }}</p>
+                    <p
+                        v-if="form.errors.content"
+                        class="text-sm text-destructive"
+                    >
+                        {{ form.errors.content }}
+                    </p>
                 </div>
 
                 <!-- Excerpt -->
@@ -124,7 +145,7 @@ watch(
                         id="excerpt"
                         v-model="form.excerpt"
                         rows="2"
-                        class="border-input bg-background focus:ring-ring w-full resize-none rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                        class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                     />
                 </div>
 
@@ -147,8 +168,12 @@ watch(
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="draft">Draft</SelectItem>
-                                <SelectItem value="published">Published</SelectItem>
-                                <SelectItem value="unpublished">Unpublished</SelectItem>
+                                <SelectItem value="published"
+                                    >Published</SelectItem
+                                >
+                                <SelectItem value="unpublished"
+                                    >Unpublished</SelectItem
+                                >
                             </SelectContent>
                         </Select>
                     </div>
@@ -159,7 +184,7 @@ watch(
                             id="scheduled_at"
                             v-model="form.scheduled_at"
                             type="datetime-local"
-                            class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                            class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                         />
                     </div>
                 </div>
@@ -178,14 +203,20 @@ watch(
                                 :checked="form.category_ids.includes(cat.id)"
                                 @update:checked="toggleCategory(cat.id)"
                             />
-                            <Label :for="`cat-${cat.id}`" class="cursor-pointer font-normal">{{ cat.name }}</Label>
+                            <Label
+                                :for="`cat-${cat.id}`"
+                                class="cursor-pointer font-normal"
+                                >{{ cat.name }}</Label
+                            >
                         </div>
                     </div>
                 </div>
 
                 <!-- SEO -->
-                <details class="border-input rounded-md border p-4">
-                    <summary class="cursor-pointer text-sm font-medium">SEO Settings</summary>
+                <details class="rounded-md border border-input p-4">
+                    <summary class="cursor-pointer text-sm font-medium">
+                        SEO Settings
+                    </summary>
                     <div class="mt-4 space-y-4">
                         <div class="space-y-1.5">
                             <Label for="meta_title">Meta Title</Label>
@@ -193,16 +224,18 @@ watch(
                                 id="meta_title"
                                 v-model="form.meta_title"
                                 type="text"
-                                class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                                class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                             />
                         </div>
                         <div class="space-y-1.5">
-                            <Label for="meta_description">Meta Description</Label>
+                            <Label for="meta_description"
+                                >Meta Description</Label
+                            >
                             <textarea
                                 id="meta_description"
                                 v-model="form.meta_description"
                                 rows="2"
-                                class="border-input bg-background focus:ring-ring w-full resize-none rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                                class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                             />
                         </div>
                     </div>

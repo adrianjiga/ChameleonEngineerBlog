@@ -82,17 +82,22 @@ function confirmDelete(post: Post) {
 
             <!-- Filters -->
             <div class="flex gap-2">
-                <div class="relative flex-1 max-w-sm">
-                    <Search class="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+                <div class="relative max-w-sm flex-1">
+                    <Search
+                        class="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                    />
                     <input
                         v-model="search"
                         type="text"
                         placeholder="Search posts..."
-                        class="border-input bg-background focus:ring-ring w-full rounded-md border py-2 pr-4 pl-9 text-sm outline-none focus:ring-2"
+                        class="w-full rounded-md border border-input bg-background py-2 pr-4 pl-9 text-sm outline-none focus:ring-2 focus:ring-ring"
                         @keydown.enter="applyFilters()"
                     />
                 </div>
-                <Select :model-value="filters.status ?? 'all'" @update:model-value="onStatusChange">
+                <Select
+                    :model-value="filters.status ?? 'all'"
+                    @update:model-value="onStatusChange"
+                >
                     <SelectTrigger class="w-36">
                         <SelectValue placeholder="Status" />
                     </SelectTrigger>
@@ -106,7 +111,7 @@ function confirmDelete(post: Post) {
             </div>
 
             <!-- Table -->
-            <div class="border-border rounded-xl border">
+            <div class="rounded-xl border border-border">
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -119,23 +124,35 @@ function confirmDelete(post: Post) {
                     </TableHeader>
                     <TableBody>
                         <TableRow v-if="posts.data.length === 0">
-                            <TableCell colspan="5" class="text-muted-foreground py-10 text-center">
+                            <TableCell
+                                colspan="5"
+                                class="py-10 text-center text-muted-foreground"
+                            >
                                 No posts found.
                             </TableCell>
                         </TableRow>
                         <TableRow v-for="post in posts.data" :key="post.id">
                             <TableCell class="max-w-xs font-medium">
-                                <span class="line-clamp-1">{{ post.title }}</span>
+                                <span class="line-clamp-1">{{
+                                    post.title
+                                }}</span>
                             </TableCell>
                             <TableCell>
-                                <Badge :variant="statusColor[post.status] ?? 'outline'">
+                                <Badge
+                                    :variant="
+                                        statusColor[post.status] ?? 'outline'
+                                    "
+                                >
                                     {{ post.status }}
                                 </Badge>
                             </TableCell>
                             <TableCell class="max-w-[160px]">
                                 <div class="flex flex-wrap gap-1">
                                     <Badge
-                                        v-for="cat in post.categories?.slice(0, 2)"
+                                        v-for="cat in post.categories?.slice(
+                                            0,
+                                            2,
+                                        )"
                                         :key="cat.id"
                                         variant="outline"
                                         class="text-xs"
@@ -143,19 +160,31 @@ function confirmDelete(post: Post) {
                                         {{ cat.name }}
                                     </Badge>
                                     <span
-                                        v-if="(post.categories?.length ?? 0) > 2"
-                                        class="text-muted-foreground text-xs"
+                                        v-if="
+                                            (post.categories?.length ?? 0) > 2
+                                        "
+                                        class="text-xs text-muted-foreground"
                                     >
-                                        +{{ (post.categories?.length ?? 0) - 2 }}
+                                        +{{
+                                            (post.categories?.length ?? 0) - 2
+                                        }}
                                     </span>
                                 </div>
                             </TableCell>
                             <TableCell class="text-muted-foreground">
-                                {{ new Date(post.created_at).toLocaleDateString() }}
+                                {{
+                                    new Date(
+                                        post.created_at,
+                                    ).toLocaleDateString()
+                                }}
                             </TableCell>
                             <TableCell>
                                 <div class="flex gap-1">
-                                    <Button variant="ghost" size="icon-sm" as-child>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon-sm"
+                                        as-child
+                                    >
                                         <Link :href="edit(post)">
                                             <Pencil class="size-4" />
                                         </Link>
@@ -185,14 +214,14 @@ function confirmDelete(post: Post) {
                             'rounded-md px-3 py-1.5 text-sm transition-colors',
                             link.active
                                 ? 'bg-primary text-primary-foreground'
-                                : 'border-input bg-background hover:bg-muted border',
+                                : 'border border-input bg-background hover:bg-muted',
                         ]"
                     >
                         <span v-html="link.label" />
                     </Link>
                     <span
                         v-else
-                        class="text-muted-foreground rounded-md px-3 py-1.5 text-sm"
+                        class="rounded-md px-3 py-1.5 text-sm text-muted-foreground"
                         v-html="link.label"
                     />
                 </template>

@@ -2,7 +2,11 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { destroy, store, update } from '@/actions/App/Http/Controllers/CategoryController';
+import {
+    destroy,
+    store,
+    update,
+} from '@/actions/App/Http/Controllers/CategoryController';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -98,29 +102,48 @@ function confirmDelete(category: Category) {
                         </DialogHeader>
                         <form class="space-y-4" @submit.prevent="submitCreate">
                             <div class="space-y-1.5">
-                                <Label for="create-name">Name <span class="text-destructive">*</span></Label>
+                                <Label for="create-name"
+                                    >Name
+                                    <span class="text-destructive"
+                                        >*</span
+                                    ></Label
+                                >
                                 <input
                                     id="create-name"
                                     v-model="createForm.name"
                                     type="text"
                                     placeholder="Category name"
-                                    class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                                    class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                                 />
-                                <p v-if="createForm.errors.name" class="text-destructive text-sm">{{ createForm.errors.name }}</p>
+                                <p
+                                    v-if="createForm.errors.name"
+                                    class="text-sm text-destructive"
+                                >
+                                    {{ createForm.errors.name }}
+                                </p>
                             </div>
                             <div class="space-y-1.5">
-                                <Label for="create-description">Description</Label>
+                                <Label for="create-description"
+                                    >Description</Label
+                                >
                                 <textarea
                                     id="create-description"
                                     v-model="createForm.description"
                                     rows="2"
                                     placeholder="Optional description"
-                                    class="border-input bg-background focus:ring-ring w-full resize-none rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                                    class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                                 />
                             </div>
                             <DialogFooter>
-                                <Button type="submit" :disabled="createForm.processing">
-                                    {{ createForm.processing ? 'Creating...' : 'Create' }}
+                                <Button
+                                    type="submit"
+                                    :disabled="createForm.processing"
+                                >
+                                    {{
+                                        createForm.processing
+                                            ? 'Creating...'
+                                            : 'Create'
+                                    }}
                                 </Button>
                             </DialogFooter>
                         </form>
@@ -129,7 +152,7 @@ function confirmDelete(category: Category) {
             </div>
 
             <!-- Table -->
-            <div class="border-border rounded-xl border">
+            <div class="rounded-xl border border-border">
                 <Table>
                     <TableHeader>
                         <TableRow>
@@ -141,16 +164,28 @@ function confirmDelete(category: Category) {
                     </TableHeader>
                     <TableBody>
                         <TableRow v-if="categories.length === 0">
-                            <TableCell colspan="4" class="text-muted-foreground py-10 text-center">
+                            <TableCell
+                                colspan="4"
+                                class="py-10 text-center text-muted-foreground"
+                            >
                                 No categories yet.
                             </TableCell>
                         </TableRow>
-                        <TableRow v-for="category in categories" :key="category.id">
-                            <TableCell class="font-medium">{{ category.name }}</TableCell>
-                            <TableCell class="text-muted-foreground max-w-xs">
-                                <span class="line-clamp-1">{{ category.description ?? '—' }}</span>
+                        <TableRow
+                            v-for="category in categories"
+                            :key="category.id"
+                        >
+                            <TableCell class="font-medium">{{
+                                category.name
+                            }}</TableCell>
+                            <TableCell class="max-w-xs text-muted-foreground">
+                                <span class="line-clamp-1">{{
+                                    category.description ?? '—'
+                                }}</span>
                             </TableCell>
-                            <TableCell class="text-right">{{ category.posts_count ?? 0 }}</TableCell>
+                            <TableCell class="text-right">{{
+                                category.posts_count ?? 0
+                            }}</TableCell>
                             <TableCell>
                                 <div class="flex justify-end gap-1">
                                     <Button
@@ -186,14 +221,21 @@ function confirmDelete(category: Category) {
                 </DialogHeader>
                 <form class="space-y-4" @submit.prevent="submitEdit">
                     <div class="space-y-1.5">
-                        <Label for="edit-name">Name <span class="text-destructive">*</span></Label>
+                        <Label for="edit-name"
+                            >Name <span class="text-destructive">*</span></Label
+                        >
                         <input
                             id="edit-name"
                             v-model="editForm.name"
                             type="text"
-                            class="border-input bg-background focus:ring-ring w-full rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                            class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                         />
-                        <p v-if="editForm.errors.name" class="text-destructive text-sm">{{ editForm.errors.name }}</p>
+                        <p
+                            v-if="editForm.errors.name"
+                            class="text-sm text-destructive"
+                        >
+                            {{ editForm.errors.name }}
+                        </p>
                     </div>
                     <div class="space-y-1.5">
                         <Label for="edit-description">Description</Label>
@@ -201,12 +243,16 @@ function confirmDelete(category: Category) {
                             id="edit-description"
                             v-model="editForm.description"
                             rows="2"
-                            class="border-input bg-background focus:ring-ring w-full resize-none rounded-md border px-3 py-2 text-sm outline-none focus:ring-2"
+                            class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                         />
                     </div>
                     <DialogFooter>
                         <Button type="submit" :disabled="editForm.processing">
-                            {{ editForm.processing ? 'Saving...' : 'Save Changes' }}
+                            {{
+                                editForm.processing
+                                    ? 'Saving...'
+                                    : 'Save Changes'
+                            }}
                         </Button>
                     </DialogFooter>
                 </form>
