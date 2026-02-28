@@ -20,7 +20,7 @@ import {
     Undo,
     Redo,
 } from 'lucide-vue-next';
-import { computed, watch } from 'vue';
+import { computed, onBeforeUnmount, watch } from 'vue';
 
 const props = withDefaults(
     defineProps<{
@@ -76,6 +76,10 @@ function addImage() {
         editor.value?.chain().focus().setImage({ src: url }).run();
     }
 }
+
+onBeforeUnmount(() => {
+    editor.value?.destroy();
+});
 
 const characterCount = computed(
     () => editor.value?.storage.characterCount?.characters?.() ?? 0,
