@@ -153,6 +153,12 @@ onBeforeUnmount(() => {
                         rows="2"
                         class="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                     />
+                    <p
+                        v-if="form.errors.excerpt"
+                        class="text-sm text-destructive"
+                    >
+                        {{ form.errors.excerpt }}
+                    </p>
                 </div>
 
                 <!-- Cover image -->
@@ -162,6 +168,12 @@ onBeforeUnmount(() => {
                         v-model="form.featured_image"
                         :existing-image-url="post.featured_image ?? undefined"
                     />
+                    <p
+                        v-if="form.errors.featured_image"
+                        class="text-sm text-destructive"
+                    >
+                        {{ form.errors.featured_image }}
+                    </p>
                 </div>
 
                 <!-- Status + Scheduled at -->
@@ -192,6 +204,12 @@ onBeforeUnmount(() => {
                             type="datetime-local"
                             class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
                         />
+                        <p
+                            v-if="form.errors.scheduled_at"
+                            class="text-sm text-destructive"
+                        >
+                            {{ form.errors.scheduled_at }}
+                        </p>
                     </div>
                 </div>
 
