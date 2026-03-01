@@ -34,16 +34,6 @@ class SitemapControllerTest extends TestCase
         $response->assertSee(route('blog.show', $post->slug), false);
     }
 
-    public function test_sitemap_does_not_contain_draft_post_urls(): void
-    {
-        $user = User::factory()->create();
-        $post = Post::factory()->for($user)->draft()->create();
-
-        $response = $this->get(route('sitemap'));
-
-        $response->assertDontSee(route('blog.show', $post->slug), false);
-    }
-
     public function test_sitemap_contains_category_urls(): void
     {
         $category = Category::factory()->create();
@@ -68,5 +58,34 @@ class SitemapControllerTest extends TestCase
         $xml = simplexml_load_string($response->getContent());
 
         $this->assertNotFalse($xml);
+    }
+
+    public function test_sitemap_lastmod_is_present_for_published_posts(): void
+    {
+        $user = User::factory()->create();
+        Post::factory()->count(2)->for($user)->published()->create();
+
+        $response = $this->get(route('sitemap'));
+
+        $response->assertSee('<lastmod>', false);
+    }
+
+    public function test_sitemap_does_not_contain_draft_post_urls(): void
+    {
+        $user = User::factory()->create();
+        $draft = Post::factory()->for($user)->draft()->create();
+        $unpublished = Post::factory()->for($user)->draft()->create();
+
+        $response = $this->get(route('sitemap'));
+
+        $response->assertDontSee(route('blog.show', $draft->slug), false);
+        $response->assertDontSee(route('blog.show', $unpublished->slug), false);
+    }
+
+    public function test_sitemap_root_element_has_correct_xmlns_declaration(): void
+    {
+        $response = $this->get(route('sitemap'));
+
+        $response->assertSee('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"', false);
     }
 }

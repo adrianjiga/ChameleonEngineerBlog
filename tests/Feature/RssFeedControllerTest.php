@@ -73,4 +73,81 @@ class RssFeedControllerTest extends TestCase
 
         $this->assertCount(20, $xml->channel->item);
     }
+
+    public function test_feed_channel_title_matches_app_name(): void
+    {
+        $response = $this->get(route('feed'));
+
+        $response->assertSee('<title>'.config('app.name').'</title>', false);
+    }
+
+    public function test_feed_items_are_ordered_by_published_at_descending(): void
+    {
+        $user = User::factory()->create();
+        Post::factory()->for($user)->published()->create([
+            'title' => 'Yesterday Post',
+            'published_at' => now()->subDay(),
+        ]);
+        Post::factory()->for($user)->published()->create([
+            'title' => 'Last Week Post',
+            'published_at' => now()->subWeek(),
+        ]);
+        Post::factory()->for($user)->published()->create([
+            'title' => 'Today Post',
+            'published_at' => now(),
+        ]);
+
+        $response = $this->get(route('feed'));
+        $xml = simplexml_load_string($response->getContent());
+
+        $titles = [];
+        foreach ($xml->channel->item as $item) {
+            $titles[] = (string) $item->title;
+        }
+
+        $this->assertSame('Today Post', $titles[0]);
+    }
+
+    public function test_feed_item_description_contains_excerpt(): void
+    {
+        $user = User::factory()->create();
+        Post::factory()->for($user)->published()->create([
+            'excerpt' => 'This is my test excerpt',
+        ]);
+
+        $response = $this->get(route('feed'));
+
+        $response->assertSee('This is my test excerpt', false);
+    }
+
+    public function test_feed_returns_200_when_no_posts_exist(): void
+    {
+        $this->get(route('feed'))->assertOk();
+    }
+
+    public function test_feed_items_contain_pub_date_element(): void
+    {
+        $user = User::factory()->create();
+        Post::factory()->for($user)->published()->create(['published_at' => now()]);
+
+        $response = $this->get(route('feed'));
+
+        $response->assertSee('<pubDate>', false);
+    }
+
+    public function test_feed_items_contain_unique_guid_element(): void
+    {
+        $user = User::factory()->create();
+        Post::factory()->count(2)->for($user)->published()->create();
+
+        $response = $this->get(route('feed'));
+        $xml = simplexml_load_string($response->getContent());
+
+        $guids = [];
+        foreach ($xml->channel->item as $item) {
+            $guids[] = (string) $item->guid;
+        }
+
+        $this->assertSame(count($guids), count(array_unique($guids)));
+    }
 }
