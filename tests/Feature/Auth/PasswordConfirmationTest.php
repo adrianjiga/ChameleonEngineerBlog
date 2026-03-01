@@ -55,4 +55,23 @@ class PasswordConfirmationTest extends TestCase
 
         $response->assertSessionHasErrors();
     }
+
+    public function test_password_confirmation_required_before_2fa_settings_access(): void
+    {
+        if (! \Laravel\Fortify\Features::canManageTwoFactorAuthentication()) {
+            $this->markTestSkipped('Two-factor authentication is not enabled.');
+        }
+
+        \Laravel\Fortify\Features::twoFactorAuthentication([
+            'confirm' => true,
+            'confirmPassword' => true,
+        ]);
+
+        $user = User::factory()->withTwoFactor()->create();
+
+        // No password_confirmed_at in session
+        $this->actingAs($user)
+            ->get(route('two-factor.show'))
+            ->assertRedirect(route('password.confirm'));
+    }
 }

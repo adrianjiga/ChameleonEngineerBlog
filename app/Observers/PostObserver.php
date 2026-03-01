@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Cache;
 
 class PostObserver
 {
-    public function __construct(private ImageOptimizer $imageOptimizer) {}
+    public function __construct(private ImageOptimizer $imageOptimizer)
+    {
+    }
 
     public function saved(Post $post): void
     {

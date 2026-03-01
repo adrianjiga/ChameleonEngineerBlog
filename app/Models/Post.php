@@ -42,13 +42,25 @@ class Post extends Model
     {
         static::creating(function (Post $post) {
             if (empty($post->slug)) {
-                $post->slug = Str::slug($post->title);
+                $baseSlug = Str::slug($post->title);
+                $slug = $baseSlug;
+                $counter = 2;
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $baseSlug.'-'.$counter++;
+                }
+                $post->slug = $slug;
             }
         });
 
         static::updating(function (Post $post) {
             if ($post->isDirty('title') && ! $post->isDirty('slug')) {
-                $post->slug = Str::slug($post->title);
+                $baseSlug = Str::slug($post->title);
+                $slug = $baseSlug;
+                $counter = 2;
+                while (static::where('slug', $slug)->where('id', '!=', $post->id)->exists()) {
+                    $slug = $baseSlug.'-'.$counter++;
+                }
+                $post->slug = $slug;
             }
         });
     }

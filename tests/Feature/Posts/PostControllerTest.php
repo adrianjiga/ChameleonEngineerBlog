@@ -375,4 +375,122 @@ class PostControllerTest extends TestCase
             ->assertUnprocessable()
             ->assertJsonValidationErrors('image');
     }
+
+    public function test_update_deletes_old_featured_image_when_new_image_uploaded(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->for($user)->create(['featured_image' => 'posts/old-image.webp']);
+
+        $this->mock(ImageOptimizer::class, function (Mockery\MockInterface $mock) {
+            $mock->shouldReceive('deleteWithVariants')->with('posts/old-image.webp')->once();
+            $mock->shouldReceive('optimize')->once()->andReturn('posts/new-image.webp');
+            $mock->shouldReceive('generateVariants')->andReturn([]);
+        });
+
+        $this->actingAs($user)
+            ->put(route('posts.update', $post), [
+                'title' => 'Updated Post',
+                'content' => 'Content.',
+                'featured_image' => UploadedFile::fake()->image('new-cover.jpg'),
+            ])
+            ->assertRedirect(route('posts.index'));
+    }
+
+    public function test_upload_image_returns_relative_webp_path(): void
+    {
+        $user = User::factory()->create();
+
+        $this->mock(ImageOptimizer::class, function (Mockery\MockInterface $mock) {
+            $mock->shouldReceive('optimize')->once()->andReturn('posts/abc123.webp');
+        });
+
+        $response = $this->actingAs($user)
+            ->post(route('posts.upload-image'), [
+                'image' => UploadedFile::fake()->image('photo.jpg'),
+            ])
+            ->assertOk();
+
+        $url = $response->json('url');
+        $this->assertStringNotContainsString('http', $url);
+        $this->assertStringStartsWith('posts/', $url);
+        $this->assertStringEndsWith('.webp', $url);
+    }
+
+    public function test_admin_index_search_shows_all_users_matching_posts(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $regularUser = User::factory()->create();
+        Post::factory()->for($regularUser)->create(['title' => 'Laravel Tips']);
+        $this->mock(ImageOptimizer::class);
+
+        $this->actingAs($admin)
+            ->get(route('posts.index', ['search' => 'Laravel']))
+            ->assertInertia(fn (Assert $page) => $page
+                ->has('posts.data', 1)
+                ->where('posts.data.0.title', 'Laravel Tips')
+            );
+    }
+
+    public function test_admin_index_status_filter_shows_all_users_posts_with_that_status(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $regularUser = User::factory()->create();
+        Post::factory()->for($regularUser)->published()->create(['title' => 'Published Post']);
+        Post::factory()->for($admin)->draft()->create(['title' => 'Draft Post']);
+        $this->mock(ImageOptimizer::class);
+
+        $this->actingAs($admin)
+            ->get(route('posts.index', ['status' => \App\Enums\PostStatus::Published->value]))
+            ->assertInertia(fn (Assert $page) => $page
+                ->has('posts.data', 1)
+                ->where('posts.data.0.title', 'Published Post')
+            );
+    }
+
+    public function test_post_index_paginates_at_15_per_page(): void
+    {
+        $admin = User::factory()->admin()->create();
+        Post::factory()->count(20)->for($admin)->create();
+        $this->mock(ImageOptimizer::class);
+
+        $this->actingAs($admin)
+            ->get(route('posts.index'))
+            ->assertInertia(fn (Assert $page) => $page
+                ->has('posts.data', 15)
+                ->where('posts.total', 20)
+            );
+    }
+
+    public function test_store_sets_published_at_when_status_is_published(): void
+    {
+        $user = User::factory()->create();
+        $this->mock(ImageOptimizer::class);
+
+        $this->actingAs($user)
+            ->post(route('posts.store'), [
+                'title' => 'Published Post',
+                'content' => 'Content.',
+                'status' => \App\Enums\PostStatus::Published->value,
+            ]);
+
+        $post = Post::where('title', 'Published Post')->first();
+        $this->assertNotNull($post->published_at);
+        $this->assertEqualsWithDelta(now()->timestamp, $post->published_at->timestamp, 5);
+    }
+
+    public function test_update_clears_scheduled_at_when_manually_published(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->for($user)->scheduled()->create(['scheduled_at' => now()->addDay()]);
+        $this->mock(ImageOptimizer::class);
+
+        $this->actingAs($user)
+            ->put(route('posts.update', $post), [
+                'title' => $post->title,
+                'content' => $post->content,
+                'status' => \App\Enums\PostStatus::Published->value,
+            ]);
+
+        $this->assertNull($post->fresh()->scheduled_at);
+    }
 }

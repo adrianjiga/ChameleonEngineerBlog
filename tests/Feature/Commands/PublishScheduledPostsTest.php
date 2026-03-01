@@ -5,6 +5,7 @@ namespace Tests\Feature\Commands;
 use App\Enums\PostStatus;
 use App\Models\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class PublishScheduledPostsTest extends TestCase
@@ -89,5 +90,38 @@ class PublishScheduledPostsTest extends TestCase
         $this->artisan('posts:publish-scheduled')
             ->expectsOutput('No scheduled posts are ready to publish.')
             ->assertSuccessful();
+    }
+
+    public function test_publish_command_increments_cache_version_when_posts_are_published(): void
+    {
+        Cache::spy();
+
+        Post::factory()->count(2)->scheduled()->create([
+            'scheduled_at' => now()->subMinute(),
+        ]);
+
+        $this->artisan('posts:publish-scheduled')->assertSuccessful();
+
+        Cache::shouldHaveReceived('increment')->with('blog:index:version')->atLeast()->once();
+    }
+
+    public function test_publish_command_does_not_touch_cache_when_nothing_published(): void
+    {
+        Cache::spy();
+
+        $this->artisan('posts:publish-scheduled')->assertSuccessful();
+
+        Cache::shouldNotHaveReceived('increment');
+    }
+
+    public function test_publish_command_handles_100_posts_without_timeout(): void
+    {
+        Post::factory()->count(100)->scheduled()->create([
+            'scheduled_at' => now()->subMinute(),
+        ]);
+
+        $this->artisan('posts:publish-scheduled')->assertSuccessful();
+
+        $this->assertSame(100, Post::where('status', \App\Enums\PostStatus::Published)->count());
     }
 }

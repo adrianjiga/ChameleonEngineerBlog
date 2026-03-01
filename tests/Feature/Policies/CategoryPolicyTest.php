@@ -127,4 +127,14 @@ class CategoryPolicyTest extends TestCase
 
         $this->assertFalse($user->can('restore', $category));
     }
+
+    public function test_guest_cannot_access_any_category_mutation_route(): void
+    {
+        $category = $this->makeCategory();
+
+        $this->get(route('categories.index'))->assertRedirect(route('login'));
+        $this->post(route('categories.store'), ['name' => 'Test'])->assertRedirect(route('login'));
+        $this->patch(route('categories.update', $category), ['name' => 'Updated'])->assertRedirect(route('login'));
+        $this->delete(route('categories.destroy', $category))->assertRedirect(route('login'));
+    }
 }

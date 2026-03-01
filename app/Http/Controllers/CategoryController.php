@@ -22,7 +22,7 @@ class CategoryController extends Controller
         $categories = Category::withCount('posts')
             ->orderBy('name')
             ->get()
-            ->map(fn (Category $category) => array_merge($category->toArray(), [
+            ->map(fn(Category $category) => array_merge($category->toArray(), [
                 'can' => [
                     'update' => $user?->can('update', $category),
                     'delete' => $user?->can('delete', $category),

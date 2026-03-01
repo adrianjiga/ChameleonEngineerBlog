@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PostStatus;
 use App\Http\Requests\Posts\StorePostRequest;
 use App\Http\Requests\Posts\UpdatePostRequest;
 use App\Models\Category;
@@ -18,7 +19,9 @@ class PostController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private ImageOptimizer $imageOptimizer) {}
+    public function __construct(private ImageOptimizer $imageOptimizer)
+    {
+    }
 
     public function index(Request $request): Response
     {
@@ -29,9 +32,9 @@ class PostController extends Controller
         $status = $request->string('status')->toString();
 
         $posts = Post::query()
-            ->when(! $user->isAdmin(), fn ($q) => $q->forUser($user))
-            ->when($search, fn ($q) => $q->search($search))
-            ->when($status, fn ($q) => $q->where('status', $status))
+            ->when(!$user->isAdmin(), fn($q) => $q->forUser($user))
+            ->when($search, fn($q) => $q->search($search))
+            ->when($status, fn($q) => $q->where('status', $status))
             ->with('categories')
             ->latest()
             ->paginate(15)
@@ -61,6 +64,10 @@ class PostController extends Controller
 
         $data = $request->validated();
 
+        if (($data['status'] ?? null) === PostStatus::Published->value && empty($data['published_at'])) {
+            $data['published_at'] = now();
+        }
+
         if ($request->hasFile('featured_image')) {
             $data['featured_image'] = $this->imageOptimizer->optimize(
                 $request->file('featured_image')
@@ -69,7 +76,7 @@ class PostController extends Controller
 
         $post = $request->user()->posts()->create($data);
 
-        if (! empty($data['category_ids'])) {
+        if (!empty($data['category_ids'])) {
             $post->categories()->sync($data['category_ids']);
         }
 
@@ -101,6 +108,13 @@ class PostController extends Controller
         $this->authorize('update', $post);
 
         $data = $request->validated();
+
+        if (($data['status'] ?? null) === PostStatus::Published->value) {
+            $data['scheduled_at'] = null;
+            if (empty($data['published_at'])) {
+                $data['published_at'] = now();
+            }
+        }
 
         if ($request->hasFile('featured_image')) {
             if ($post->featured_image) {
@@ -145,7 +159,7 @@ class PostController extends Controller
     {
         $this->authorize('create', Post::class);
 
-        $request->validate(['image' => ['required', 'file', 'image', 'max:5120']]);
+        $request->validate(['image' => ['required', 'file', 'image', 'max:5120', 'mimes:jpg,jpeg,png,webp']]);
 
         $path = $this->imageOptimizer->optimize($request->file('image'));
 

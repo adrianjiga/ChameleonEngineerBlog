@@ -139,4 +139,46 @@ class ProfileUpdateTest extends TestCase
 
         $response->assertSessionHasErrors('email');
     }
+
+    public function test_email_change_triggers_verification_notification(): void
+    {
+        \Illuminate\Support\Facades\Notification::fake();
+
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->patch(route('profile.update'), [
+                'name' => $user->name,
+                'email' => 'new-email@example.com',
+            ]);
+
+        \Illuminate\Support\Facades\Notification::assertSentTo(
+            $user->fresh(),
+            \Illuminate\Auth\Notifications\VerifyEmail::class
+        );
+    }
+
+    public function test_no_verification_notification_when_email_unchanged(): void
+    {
+        \Illuminate\Support\Facades\Notification::fake();
+
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->patch(route('profile.update'), [
+                'name' => 'Changed Name',
+                'email' => $user->email,
+            ]);
+
+        \Illuminate\Support\Facades\Notification::assertNothingSent();
+    }
+
+    public function test_user_with_unverified_email_is_redirected_from_dashboard(): void
+    {
+        $user = User::factory()->unverified()->create();
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertRedirect(route('verification.notice'));
+    }
 }

@@ -27,7 +27,7 @@ class StoreCategoryRequest extends FormRequest
     public function withValidator($validator): void
     {
         $validator->after(function ($validator) {
-            if (! $validator->errors()->has('name') && $this->name) {
+            if (!$validator->errors()->has('name') && $this->name) {
                 $slug = Str::slug($this->name);
                 if (\App\Models\Category::where('slug', $slug)->exists()) {
                     $validator->errors()->add('name', 'A category with a similar slug already exists.');

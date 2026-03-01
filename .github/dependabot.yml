@@ -63,6 +63,11 @@ updates:
           - '@types/*'
           - 'vue-input-otp'
           - 'vue-sonner'
+    ignore:
+      # eslint v9 is required by all eslint plugins as a peer dependency;
+      # hold at v9.x until the ecosystem fully supports v10+
+      - dependency-name: 'eslint'
+        versions: ['>=10']
 
   # ─── Composer ─────────────────────────────────────────────────────────────
   - package-ecosystem: 'composer'
@@ -94,3 +99,15 @@ updates:
           - 'symfony/*'
           - 'aws/*'
           - 'brick/*'
+
+  # ─── GitHub Actions ────────────────────────────────────────────────────────
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'sunday'
+    groups:
+      # All GitHub Actions pinned by commit SHA
+      github-actions:
+        patterns:
+          - '*'

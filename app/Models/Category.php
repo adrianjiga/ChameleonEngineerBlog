@@ -22,15 +22,32 @@ class Category extends Model
     {
         static::creating(function (Category $category) {
             if (empty($category->slug)) {
-                $category->slug = Str::slug($category->name);
+                $baseSlug = Str::slug($category->name);
+                $slug = $baseSlug;
+                $counter = 2;
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $baseSlug.'-'.$counter++;
+                }
+                $category->slug = $slug;
             }
         });
 
         static::updating(function (Category $category) {
             if ($category->isDirty('name') && ! $category->isDirty('slug')) {
-                $category->slug = Str::slug($category->name);
+                $baseSlug = Str::slug($category->name);
+                $slug = $baseSlug;
+                $counter = 2;
+                while (static::where('slug', $slug)->where('id', '!=', $category->id)->exists()) {
+                    $slug = $baseSlug.'-'.$counter++;
+                }
+                $category->slug = $slug;
             }
         });
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 
     public function posts(): BelongsToMany
