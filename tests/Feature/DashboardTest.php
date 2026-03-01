@@ -170,4 +170,66 @@ class DashboardTest extends TestCase
             ->get(route('dashboard'))
             ->assertInertia(fn (Assert $page) => $page->has('popularCategories', 5));
     }
+
+    public function test_popular_categories_are_ordered_by_posts_count_descending(): void
+    {
+        $user = User::factory()->admin()->create();
+        [$cat1, $cat2, $cat3] = Category::factory()->count(3)->create()->all();
+
+        // 5 posts → cat1, 2 posts → cat2, 8 posts → cat3
+        Post::factory()->count(5)->for($user)->published()->create()
+            ->each(fn ($p) => $p->categories()->attach($cat1));
+        Post::factory()->count(2)->for($user)->published()->create()
+            ->each(fn ($p) => $p->categories()->attach($cat2));
+        Post::factory()->count(8)->for($user)->published()->create()
+            ->each(fn ($p) => $p->categories()->attach($cat3));
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('popularCategories.0.name', $cat3->name)
+                ->where('popularCategories.1.name', $cat1->name)
+            );
+    }
+
+    public function test_stats_counts_scheduled_posts_as_draft(): void
+    {
+        $user = User::factory()->create();
+        Post::factory()->for($user)->scheduled()->create(['scheduled_at' => now()->addDay()]);
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('stats.draftPosts', 1)
+                ->where('stats.publishedPosts', 0)
+            );
+    }
+
+    public function test_dashboard_stats_are_all_zero_when_no_posts(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('stats.totalPosts', 0)
+                ->where('stats.publishedPosts', 0)
+                ->where('stats.draftPosts', 0)
+            );
+    }
+
+    public function test_recent_posts_are_ordered_by_created_at_descending(): void
+    {
+        $user = User::factory()->create();
+
+        $oldest = Post::factory()->for($user)->create(['created_at' => now()->subDays(3), 'title' => 'Oldest Post']);
+        $middle = Post::factory()->for($user)->create(['created_at' => now()->subDays(2), 'title' => 'Middle Post']);
+        $newest = Post::factory()->for($user)->create(['created_at' => now()->subDay(), 'title' => 'Newest Post']);
+
+        $this->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('recentPosts.0.title', 'Newest Post')
+            );
+    }
 }

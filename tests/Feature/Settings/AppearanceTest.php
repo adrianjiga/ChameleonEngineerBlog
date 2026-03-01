@@ -25,4 +25,13 @@ class AppearanceTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page->component('settings/Appearance', false));
     }
+
+    public function test_appearance_page_loads_with_default_system_theme(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get(route('appearance.edit'))
+            ->assertOk();
+    }
 }
