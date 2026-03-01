@@ -94,3 +94,15 @@ updates:
           - 'symfony/*'
           - 'aws/*'
           - 'brick/*'
+
+  # ─── GitHub Actions ────────────────────────────────────────────────────────
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'sunday'
+    groups:
+      # All GitHub Actions pinned by commit SHA
+      github-actions:
+        patterns:
+          - '*'
