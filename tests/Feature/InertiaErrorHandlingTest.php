@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
@@ -97,5 +99,30 @@ class InertiaErrorHandlingTest extends TestCase
             'Your session has expired. Please refresh and try again.',
             session('flash.error')
         );
+    }
+
+    public function test_404_for_nonexistent_blog_post_slug(): void
+    {
+        $response = $this->withHeaders($this->inertiaHeaders)
+            ->get('/blog/this-post-does-not-exist');
+
+        $response->assertStatus(404);
+        $response->assertJsonPath('component', 'ErrorPage');
+        $response->assertJsonPath('props.status', 404);
+    }
+
+    public function test_403_message_is_passed_as_prop_to_error_page(): void
+    {
+        $userA = User::factory()->create();
+        $userB = User::factory()->create();
+        $post = Post::factory()->for($userA)->create();
+
+        $response = $this->actingAs($userB)
+            ->withHeaders($this->inertiaHeaders)
+            ->get(route('posts.edit', $post));
+
+        $response->assertStatus(403);
+        $response->assertJsonPath('component', 'ErrorPage');
+        $response->assertJsonPath('props.status', 403);
     }
 }

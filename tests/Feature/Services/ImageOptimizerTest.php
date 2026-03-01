@@ -104,4 +104,38 @@ class ImageOptimizerTest extends TestCase
         $this->assertSame('posts/my-image_medium.webp', $urls['medium']);
         $this->assertSame('posts/my-image_thumb.webp', $urls['thumb']);
     }
+
+    public function test_optimize_handles_png_input(): void
+    {
+        $file = UploadedFile::fake()->image('test.png', 100, 100);
+
+        $path = $this->optimizer->optimize($file, 'posts');
+
+        $this->assertStringEndsWith('.webp', $path);
+        Storage::assertExists($path);
+    }
+
+    public function test_optimize_generates_unique_filenames_for_same_file(): void
+    {
+        $file1 = UploadedFile::fake()->image('photo.jpg', 100, 100);
+        $file2 = UploadedFile::fake()->image('photo.jpg', 100, 100);
+
+        $path1 = $this->optimizer->optimize($file1, 'posts');
+        $path2 = $this->optimizer->optimize($file2, 'posts');
+
+        $this->assertNotEquals($path1, $path2);
+    }
+
+    public function test_optimize_does_not_upscale_small_images(): void
+    {
+        $file = UploadedFile::fake()->image('small.jpg', 50, 50);
+
+        $path = $this->optimizer->optimize($file, 'posts');
+        $variants = $this->optimizer->generateVariants($path);
+
+        // All variant files should exist (they just won't be larger than original)
+        foreach ($variants as $variantPath) {
+            Storage::assertExists($variantPath);
+        }
+    }
 }

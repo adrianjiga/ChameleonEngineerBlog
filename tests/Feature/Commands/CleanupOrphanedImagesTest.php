@@ -112,4 +112,43 @@ class CleanupOrphanedImagesTest extends TestCase
         Storage::assertMissing('posts/stale_medium.webp');
         Storage::assertMissing('posts/stale_thumb.webp');
     }
+
+    public function test_cleanup_handles_empty_directory_gracefully(): void
+    {
+        // Storage::fake() is called in setUp, no files present
+        $this->artisan('posts:cleanup-images')
+            ->assertSuccessful();
+    }
+
+    public function test_cleanup_is_idempotent(): void
+    {
+        Storage::put('posts/orphan.webp', 'image-data');
+
+        $this->artisan('posts:cleanup-images')->assertSuccessful();
+        // Second run should find no orphans
+        $this->artisan('posts:cleanup-images')
+            ->expectsOutput('No files found in posts storage.')
+            ->assertSuccessful();
+    }
+
+    public function test_cleanup_correctly_identifies_variant_suffix_pattern(): void
+    {
+        $post = Post::factory()->withFeaturedImage()->create();
+        $info = pathinfo($post->featured_image);
+        $sizes = array_keys(config('images.sizes'));
+
+        Storage::put($post->featured_image, 'image-data');
+        foreach ($sizes as $sizeName) {
+            Storage::put("{$info['dirname']}/{$info['filename']}_{$sizeName}.webp", 'variant-data');
+        }
+
+        $this->artisan('posts:cleanup-images')
+            ->expectsOutput('No orphaned images found.')
+            ->assertSuccessful();
+
+        Storage::assertExists($post->featured_image);
+        foreach ($sizes as $sizeName) {
+            Storage::assertExists("{$info['dirname']}/{$info['filename']}_{$sizeName}.webp");
+        }
+    }
 }
