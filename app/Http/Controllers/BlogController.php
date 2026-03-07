@@ -56,6 +56,8 @@ class BlogController extends Controller
 
         $post = Cache::remember($cacheKey, now()->addMinutes(10), fn () => $post->load('categories', 'user'));
 
+        $post->increment('views');
+
         $relatedPosts = Post::published()
             ->with(['categories', 'user'])
             ->whereHas('categories', fn ($q) => $q->whereIn(

@@ -23,6 +23,7 @@ class DashboardController extends Controller
             'publishedPosts' => (clone $postQuery)->where('status', PostStatus::Published)->count(),
             'draftPosts' => (clone $postQuery)->where('status', PostStatus::Draft)->count(),
             'totalCategories' => Category::count(),
+            'totalViews' => (clone $postQuery)->sum('views'),
         ];
 
         $recentPosts = (clone $postQuery)
