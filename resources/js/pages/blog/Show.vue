@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { ArrowLeft, Check, Clock, Copy, Link as LinkIcon } from 'lucide-vue-next';
+import { ArrowLeft, Check, Clock, Link as LinkIcon } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import BlogHeader from '@/components/BlogHeader.vue';
 import { Badge } from '@/components/ui/badge';
