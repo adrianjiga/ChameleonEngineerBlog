@@ -11,6 +11,7 @@ import type { Post } from '@/types';
 defineProps<{
     post: Post;
     relatedPosts: Post[];
+    isPreview?: boolean;
 }>();
 
 </script>
@@ -43,7 +44,15 @@ defineProps<{
         />
     </Head>
 
-    <div class="min-h-screen bg-background">
+    <!-- Preview banner -->
+    <div
+        v-if="isPreview"
+        class="fixed inset-x-0 top-0 z-50 bg-yellow-400 px-4 py-2 text-center text-sm font-medium text-yellow-900"
+    >
+        Preview — this post is not yet published
+    </div>
+
+    <div :class="['min-h-screen bg-background', isPreview && 'pt-10']">
         <BlogHeader max-width="max-w-3xl" />
 
         <main class="mx-auto max-w-3xl px-4 py-10">
