@@ -21,7 +21,9 @@ Route::get('blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
 
-    Route::post('posts/upload-image', [PostController::class, 'uploadImage'])->name('posts.upload-image');
+    Route::post('posts/upload-image', [PostController::class, 'uploadImage'])
+        ->name('posts.upload-image')
+        ->middleware('throttle:20,1');
     Route::patch('posts/{post}/autosave', [PostController::class, 'autosave'])
         ->name('posts.autosave')
         ->middleware('throttle:60,1');
