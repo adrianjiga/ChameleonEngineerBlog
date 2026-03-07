@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import { FileText, Tag } from 'lucide-vue-next';
+import { Eye, FileText, Tag } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
 import {
     Card,
@@ -30,6 +30,7 @@ defineProps<{
         publishedPosts: number;
         draftPosts: number;
         totalCategories: number;
+        totalViews: number;
     };
     recentPosts: Post[];
     popularCategories: Category[];
@@ -47,7 +48,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex flex-col gap-6 p-6">
             <!-- Stat cards -->
-            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
                 <Card>
                     <CardHeader class="pb-2">
                         <CardDescription>Total Posts</CardDescription>
@@ -104,6 +105,23 @@ const breadcrumbs: BreadcrumbItem[] = [
                         >
                             <Tag class="size-3" />
                             Content categories
+                        </p>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader class="pb-2">
+                        <CardDescription>Total Views</CardDescription>
+                        <CardTitle class="text-3xl">{{
+                            stats.totalViews
+                        }}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p
+                            class="flex items-center gap-1 text-xs text-muted-foreground"
+                        >
+                            <Eye class="size-3" />
+                            All-time page views
                         </p>
                     </CardContent>
                 </Card>
