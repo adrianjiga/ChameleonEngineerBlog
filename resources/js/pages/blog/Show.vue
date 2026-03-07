@@ -16,7 +16,32 @@ defineProps<{
 </script>
 
 <template>
-    <Head :title="post.title" />
+    <Head :title="post.meta_title ?? post.title">
+        <meta
+            v-if="post.meta_description ?? post.excerpt"
+            name="description"
+            :content="post.meta_description ?? post.excerpt"
+            head-key="description"
+        />
+        <meta property="og:type" content="article" head-key="og:type" />
+        <meta
+            property="og:title"
+            :content="post.meta_title ?? post.title"
+            head-key="og:title"
+        />
+        <meta
+            v-if="post.meta_description ?? post.excerpt"
+            property="og:description"
+            :content="post.meta_description ?? post.excerpt"
+            head-key="og:description"
+        />
+        <meta
+            v-if="post.featured_image_urls?.large ?? post.featured_image"
+            property="og:image"
+            :content="post.featured_image_urls?.large ?? post.featured_image"
+            head-key="og:image"
+        />
+    </Head>
 
     <div class="min-h-screen bg-background">
         <BlogHeader max-width="max-w-3xl" />
