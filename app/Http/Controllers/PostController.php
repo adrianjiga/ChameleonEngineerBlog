@@ -19,9 +19,7 @@ class PostController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct(private ImageOptimizer $imageOptimizer)
-    {
-    }
+    public function __construct(private ImageOptimizer $imageOptimizer) {}
 
     public function index(Request $request): Response
     {
@@ -32,9 +30,9 @@ class PostController extends Controller
         $status = $request->string('status')->toString();
 
         $posts = Post::query()
-            ->when(!$user->isAdmin(), fn($q) => $q->forUser($user))
-            ->when($search, fn($q) => $q->search($search))
-            ->when($status, fn($q) => $q->where('status', $status))
+            ->when(! $user->isAdmin(), fn ($q) => $q->forUser($user))
+            ->when($search, fn ($q) => $q->search($search))
+            ->when($status, fn ($q) => $q->where('status', $status))
             ->with('categories')
             ->latest()
             ->paginate(15)
@@ -76,7 +74,7 @@ class PostController extends Controller
 
         $post = $request->user()->posts()->create($data);
 
-        if (!empty($data['category_ids'])) {
+        if (! empty($data['category_ids'])) {
             $post->categories()->sync($data['category_ids']);
         }
 
@@ -144,6 +142,29 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')
             ->with('flash.success', 'Post deleted successfully.');
+    }
+
+    public function preview(Post $post): Response
+    {
+        $this->authorize('update', $post);
+
+        $post->load('categories', 'user');
+
+        $relatedPosts = Post::published()
+            ->with(['categories', 'user'])
+            ->whereHas('categories', fn ($q) => $q->whereIn(
+                'categories.id',
+                $post->categories->pluck('id')
+            ))
+            ->where('id', '!=', $post->id)
+            ->limit(3)
+            ->get();
+
+        return Inertia::render('blog/Show', [
+            'post' => $post,
+            'relatedPosts' => $relatedPosts,
+            'isPreview' => true,
+        ]);
     }
 
     public function autosave(UpdatePostRequest $request, Post $post): JsonResponse

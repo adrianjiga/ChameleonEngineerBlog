@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('posts/{post}/autosave', [PostController::class, 'autosave'])
         ->name('posts.autosave')
         ->middleware('throttle:60,1');
+    Route::get('posts/{post}/preview', [PostController::class, 'preview'])
+        ->name('posts.preview');
     Route::resource('posts', PostController::class);
     Route::resource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
 });
