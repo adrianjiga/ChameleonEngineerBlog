@@ -87,7 +87,9 @@ onBeforeUnmount(() => {
                             v-if="autosaveStatus === 'saved'"
                             class="size-4 text-green-500"
                         />
-                        {{ autosaveStatus === 'saving' ? 'Saving...' : 'Saved' }}
+                        {{
+                            autosaveStatus === 'saving' ? 'Saving...' : 'Saved'
+                        }}
                     </span>
                     <a
                         :href="preview(post).url"
