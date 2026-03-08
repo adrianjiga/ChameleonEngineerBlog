@@ -26,6 +26,7 @@ export type Post = {
     scheduled_at: string | null;
     meta_title: string | null;
     meta_description: string | null;
+    views: number;
     reading_time: number;
     created_at: string;
     updated_at: string;

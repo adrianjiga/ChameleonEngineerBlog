@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Head, router, useForm } from '@inertiajs/vue3';
-import { CheckCircle } from 'lucide-vue-next';
+import { CheckCircle, ExternalLink } from 'lucide-vue-next';
 import { onBeforeUnmount, ref, watch } from 'vue';
 import { update } from '@/actions/App/Http/Controllers/PostController';
 import PostForm from '@/components/PostForm.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
-import { autosave, index as postsIndex } from '@/routes/posts';
+import { autosave, index as postsIndex, preview } from '@/routes/posts';
 import type { BreadcrumbItem, Category, Post } from '@/types';
 
 const props = defineProps<{ post: Post; categories: Category[] }>();
@@ -78,16 +78,27 @@ onBeforeUnmount(() => {
         <div class="mx-auto max-w-3xl p-6">
             <div class="mb-6 flex items-center justify-between">
                 <h1 class="text-2xl font-semibold">Edit Post</h1>
-                <span
-                    v-if="autosaveStatus !== 'idle'"
-                    class="flex items-center gap-1.5 text-sm text-muted-foreground"
-                >
-                    <CheckCircle
-                        v-if="autosaveStatus === 'saved'"
-                        class="size-4 text-green-500"
-                    />
-                    {{ autosaveStatus === 'saving' ? 'Saving...' : 'Saved' }}
-                </span>
+                <div class="flex items-center gap-3">
+                    <span
+                        v-if="autosaveStatus !== 'idle'"
+                        class="flex items-center gap-1.5 text-sm text-muted-foreground"
+                    >
+                        <CheckCircle
+                            v-if="autosaveStatus === 'saved'"
+                            class="size-4 text-green-500"
+                        />
+                        {{ autosaveStatus === 'saving' ? 'Saving...' : 'Saved' }}
+                    </span>
+                    <a
+                        :href="preview(post).url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium hover:bg-muted"
+                    >
+                        <ExternalLink class="size-4" />
+                        Preview
+                    </a>
+                </div>
             </div>
 
             <PostForm

@@ -14,6 +14,13 @@ class UpdatePostRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('content')) {
+            $this->merge(['content' => clean($this->input('content'), 'blog')]);
+        }
+    }
+
     /**
      * @return array<string, ValidationRule|array<mixed>|string>
      */
