@@ -15,6 +15,9 @@ class Post extends Model
     /** @use HasFactory<\Database\Factories\PostFactory> */
     use HasFactory;
 
+    /** @var list<string> */
+    protected $appends = ['reading_time', 'featured_image_urls'];
+
     protected $fillable = [
         'user_id',
         'title',
