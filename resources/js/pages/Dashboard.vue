@@ -39,7 +39,6 @@ defineProps<{
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Dashboard', href: dashboard().url },
 ];
-
 </script>
 
 <template>
@@ -158,7 +157,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 >
                                     <TableCell class="font-medium">
                                         <Link
-                                            :href="postShow({ id: post.id })"
+                                            :href="postShow(post)"
                                             class="hover:underline"
                                         >
                                             {{ post.title }}

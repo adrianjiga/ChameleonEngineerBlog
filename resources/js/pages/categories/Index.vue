@@ -69,7 +69,7 @@ function openEdit(category: Category) {
 
 function submitEdit() {
     if (!editingCategory.value) return;
-    editForm.submit(update({ category: editingCategory.value.id }), {
+    editForm.submit(update(editingCategory.value), {
         onSuccess: () => {
             editOpen.value = false;
         },
@@ -80,7 +80,7 @@ const deleteForm = useForm({});
 
 function confirmDelete(category: Category) {
     if (!confirm(`Delete "${category.name}"? This cannot be undone.`)) return;
-    deleteForm.submit(destroy({ category: category.id }));
+    deleteForm.submit(destroy(category));
 }
 </script>
 

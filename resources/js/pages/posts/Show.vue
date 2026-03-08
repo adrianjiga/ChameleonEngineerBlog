@@ -17,7 +17,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Posts', href: postsIndex().url },
     { title: props.post.title },
 ];
-
 </script>
 
 <template>

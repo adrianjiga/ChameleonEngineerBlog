@@ -33,7 +33,7 @@ class PostController extends Controller
             ->when(! $user->isAdmin(), fn ($q) => $q->forUser($user))
             ->when($search, fn ($q) => $q->search($search))
             ->when($status, fn ($q) => $q->where('status', $status))
-            ->with('categories')
+            ->with(['categories', 'user'])
             ->latest()
             ->paginate(15)
             ->withQueryString();

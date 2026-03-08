@@ -121,9 +121,7 @@ function toggleCategory(id: number) {
                     <SelectContent>
                         <SelectItem value="draft">Draft</SelectItem>
                         <SelectItem value="published">Published</SelectItem>
-                        <SelectItem value="unpublished"
-                            >Unpublished</SelectItem
-                        >
+                        <SelectItem value="unpublished">Unpublished</SelectItem>
                     </SelectContent>
                 </Select>
                 <p v-if="form.errors.status" class="text-sm text-destructive">
@@ -168,10 +166,7 @@ function toggleCategory(id: number) {
                     >
                 </div>
             </div>
-            <p
-                v-if="form.errors.category_ids"
-                class="text-sm text-destructive"
-            >
+            <p v-if="form.errors.category_ids" class="text-sm text-destructive">
                 {{ form.errors.category_ids }}
             </p>
         </div>

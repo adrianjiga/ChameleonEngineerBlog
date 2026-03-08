@@ -106,10 +106,11 @@ function filterByCategory(slug: string | null) {
                 v-if="posts.data.length > 0"
                 class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
             >
-                <article
+                <Link
                     v-for="post in posts.data"
                     :key="post.id"
-                    class="flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
+                    :href="blogShow(post)"
+                    class="group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary/30 hover:shadow-lg"
                 >
                     <div
                         v-if="post.featured_image"
@@ -121,7 +122,7 @@ function filterByCategory(slug: string | null) {
                                 post.featured_image
                             "
                             :alt="post.title"
-                            class="h-full w-full object-cover transition-transform hover:scale-105"
+                            class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                         />
                     </div>
                     <div class="flex flex-1 flex-col gap-3 p-5">
@@ -136,13 +137,9 @@ function filterByCategory(slug: string | null) {
                             </Badge>
                         </div>
                         <h2
-                            class="line-clamp-2 text-lg leading-tight font-semibold"
+                            class="line-clamp-2 text-lg leading-tight font-semibold transition-colors duration-300 group-hover:text-primary"
                         >
-                            <Link
-                                :href="blogShow(post)"
-                                class="hover:underline"
-                                >{{ post.title }}</Link
-                            >
+                            {{ post.title }}
                         </h2>
                         <p
                             v-if="post.excerpt"
@@ -158,7 +155,7 @@ function filterByCategory(slug: string | null) {
                             <span>{{ formatDate(post.published_at) }}</span>
                         </div>
                     </div>
-                </article>
+                </Link>
             </div>
 
             <!-- Empty state -->

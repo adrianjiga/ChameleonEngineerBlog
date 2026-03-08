@@ -114,6 +114,7 @@ function confirmDelete(post: Post) {
                     <TableHeader>
                         <TableRow>
                             <TableHead>Title</TableHead>
+                            <TableHead>Author</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Categories</TableHead>
                             <TableHead>Date</TableHead>
@@ -123,7 +124,7 @@ function confirmDelete(post: Post) {
                     <TableBody>
                         <TableRow v-if="posts.data.length === 0">
                             <TableCell
-                                colspan="5"
+                                colspan="6"
                                 class="py-10 text-center text-muted-foreground"
                             >
                                 No posts found.
@@ -134,6 +135,9 @@ function confirmDelete(post: Post) {
                                 <span class="line-clamp-1">{{
                                     post.title
                                 }}</span>
+                            </TableCell>
+                            <TableCell class="text-muted-foreground">
+                                {{ post.user?.name ?? '—' }}
                             </TableCell>
                             <TableCell>
                                 <Badge
