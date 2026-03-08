@@ -54,9 +54,9 @@ class BlogController extends Controller
 
         $cacheKey = "post:{$post->id}";
 
-        $post = Cache::remember($cacheKey, now()->addMinutes(10), fn () => $post->load('categories', 'user'));
+        $post->incrementQuietly('views');
 
-        $post->increment('views');
+        $post = Cache::remember($cacheKey, now()->addMinutes(10), fn () => $post->load('categories', 'user'));
 
         $relatedPosts = Post::published()
             ->with(['categories', 'user'])
