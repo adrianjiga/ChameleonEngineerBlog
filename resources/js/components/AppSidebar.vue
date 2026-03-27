@@ -8,6 +8,7 @@ import {
     Newspaper,
     Tag,
 } from 'lucide-vue-next';
+import AppLogo from './AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
@@ -25,7 +26,6 @@ import { index as blogIndex } from '@/routes/blog';
 import { index as categoriesIndex } from '@/routes/categories';
 import { index as postsIndex } from '@/routes/posts';
 import type { NavItem } from '@/types';
-import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
     {
