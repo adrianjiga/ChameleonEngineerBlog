@@ -15,7 +15,7 @@
         "@laravel/vite-plugin-wayfinder": "^0.1.7",
         "@tailwindcss/vite": "^4.2.2",
         "@types/node": "^25.5.0",
-        "@vitejs/plugin-vue": "^6.0.4",
+        "@vitejs/plugin-vue": "^6.0.5",
         "@vue/eslint-config-typescript": "^14.7.0",
         "concurrently": "^9.2.1",
         "eslint": "^9.39.3",
@@ -25,10 +25,10 @@
         "eslint-plugin-vue": "^10.8.0",
         "prettier": "^3.8.1",
         "prettier-plugin-tailwindcss": "^0.7.2",
-        "typescript": "^5.9.3",
+        "typescript": "^6.0.2",
         "typescript-eslint": "^8.56.1",
-        "vite": "^7.3.1",
-        "vue-tsc": "^3.2.5"
+        "vite": "^8.0.3",
+        "vue-tsc": "^3.2.6"
     },
     "dependencies": {
         "@inertiajs/vue3": "^3.0.1",
@@ -42,7 +42,7 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "dompurify": "^3.3.3",
-        "laravel-vite-plugin": "^2.1.0",
+        "laravel-vite-plugin": "^3.0.0",
         "lucide-vue-next": "^1.0.0",
         "reka-ui": "^2.9.2",
         "tailwind-merge": "^3.5.0",
