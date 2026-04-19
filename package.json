@@ -25,10 +25,10 @@
         "eslint-plugin-vue": "^10.8.0",
         "prettier": "^3.8.1",
         "prettier-plugin-tailwindcss": "^0.7.2",
-        "typescript": "^6.0.2",
+        "typescript": "^6.0.3",
         "typescript-eslint": "^8.56.1",
         "vite": "^8.0.8",
-        "vue-tsc": "^3.2.6"
+        "vue-tsc": "^3.2.7"
     },
     "dependencies": {
         "@inertiajs/vue3": "^3.0.3",
